@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 12, "column": 0}, "map": {"version":3,"sources":["file:///Users/admin/Downloads/study-space-ai/client/study-space/app/history/page.js"],"sourcesContent":["export default function historyPage(){\n    return <h1>View your saved quizzes here</h1>\n}"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACpB,qBAAO,8OAAC;kBAAG;;;;;;AACf","debugId":null}}]
+}

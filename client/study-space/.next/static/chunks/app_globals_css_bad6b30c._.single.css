@@ -407,10 +407,6 @@
 @layer components;
 
 @layer utilities {
-  .static {
-    position: static;
-  }
-
   .row-start-2 {
     grid-row-start: 2;
   }

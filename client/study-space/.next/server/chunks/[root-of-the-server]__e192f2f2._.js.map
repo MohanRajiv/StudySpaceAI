@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 3, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 55, "column": 0}, "map": {"version":3,"sources":["file:///Users/admin/Downloads/study-space-ai/client/study-space/app/api/users/route.js"],"sourcesContent":["import { NextResponse } from \"next/server\";\nimport { createUser } from \"@/actions/user.actions\";\n\nexport async function POST(req) {\n  const body = await req.json();\n  const user = await createUser(body);\n  return NextResponse.json(user);\n}"],"names":[],"mappings":";;;;AAAA;;;;;;;;AAGO,eAAe,KAAK,GAAG;IAC5B,MAAM,OAAO,MAAM,IAAI,IAAI;IAC3B,MAAM,OAAO,MAAM,WAAW;IAC9B,OAAO,gJAAY,CAAC,IAAI,CAAC;AAC3B","debugId":null}}]
+}

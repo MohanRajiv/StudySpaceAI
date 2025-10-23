@@ -3,13 +3,15 @@
 import User from "@/modals/user.modal";
 import { connectToDB } from "@/database";
 
-export async function createUser({user}){
-    try {
-        await connectToDB();
-        const newUser = await User.create(user);
-        return JSON.parse(JSON.stringify(newUser));
-    }
-    catch (error) {
-        console.log(error);
-    }
+export async function createUser(userData) {
+  try {
+    await connectToDB();
+    const existingUser = await User.findOne({ clerkId: userData.clerkId });
+    if (existingUser) return existingUser;
+
+    const newUser = await User.create(userData);
+    return JSON.parse(JSON.stringify(newUser));
+  } catch (err) {
+    console.error("Error creating user:", err);
+  }
 }
