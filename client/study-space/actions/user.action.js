@@ -1,11 +1,11 @@
 "use server";
 
 import User from "@/modals/user.modal";
-import {connect} from "@/db";
+import { connectToDB } from "@/database";
 
 export async function createUser({user}){
     try {
-        await connect();
+        await connectToDB();
         const newUser = await User.create(user);
         return JSON.parse(JSON.stringify(newUser));
     }
