@@ -16,6 +16,7 @@
 # next.js
 /.next/
 /out/
+client/study-space/.next/
 
 # production
 /build
