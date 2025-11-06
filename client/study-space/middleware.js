@@ -13,9 +13,10 @@ export default clerkMiddleware(async (auth, req) => {
 
 export const config = {
   matcher: [
+    // Exclude static files and Next.js internals
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Skip Clerk for webhooks
-    "/(api(?!/webhooks)|trpc)(.*)",
+    // Exclude API routes from middleware (they handle auth individually)
+    "/((?!api).*)",
   ],
 };
 
