@@ -2,5 +2,5 @@
   "version": 3,
   "sources": [],
   "sections": [
-    {"offset": {"line": 12, "column": 0}, "map": {"version":3,"sources":["file:///Users/admin/Downloads/study-space-ai/client/study-space/app/history/page.js"],"sourcesContent":["export default function historyPage(){\n    return <h1>View your saved quizzes here</h1>\n}"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACpB,qBAAO,8OAAC;kBAAG;;;;;;AACf","debugId":null}}]
+    {"offset": {"line": 12, "column": 0}, "map": {"version":3,"sources":["file:///Users/admin/Downloads/study-space-ai/client/study-space/app/history/page.js"],"sourcesContent":["export default function historyPage(){\n    return (\n        <div>\n            <h1>View your saved quizzes here</h1>\n            <div>\n                {Array.from([1,2,3]).map}\n            </div>\n        </div>\n    );\n    \n}"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACpB,qBACI,8OAAC;;0BACG,8OAAC;0BAAG;;;;;;0BACJ,8OAAC;0BACI,MAAM,IAAI,CAAC;oBAAC;oBAAE;oBAAE;iBAAE,EAAE,GAAG;;;;;;;;;;;;AAKxC","debugId":null}}]
 }

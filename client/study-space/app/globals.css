@@ -60,3 +60,7 @@ a {
   align-items: flex-start;
   margin-bottom: 10px; 
 }
+
+.quizHover:hover{
+  background-color: rgb(164, 162, 162);
+}

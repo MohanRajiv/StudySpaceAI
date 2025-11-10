@@ -889,6 +889,10 @@ a {
   display: flex;
 }
 
+.quizHover:hover {
+  background-color: #a4a2a2;
+}
+
 @property --tw-border-style {
   syntax: "*";
   inherits: false;
