@@ -9,9 +9,9 @@ export async function POST(req) {
     return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
   }
 
-  const buffer = Buffer.from(await file.arrayBuffer());
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-  const text = await new Promise((resolve, reject) => {
+    const text = await new Promise((resolve, reject) => {
     const pdfParser = new PDFParser();
 
     pdfParser.on("pdfParser_dataError", (err) => reject(err));

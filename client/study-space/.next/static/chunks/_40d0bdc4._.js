@@ -36,6 +36,7 @@ function CreateQuiz() {
     const [loadingTwo, setLoadingTwo] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [value, setValue] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
     const [textValue, setTextValue] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
+    const [quizType, setQuizType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const handleNumberChange = (e)=>{
         setValue(e.target.value);
     };
@@ -44,7 +45,11 @@ function CreateQuiz() {
     };
     const handleSubmit = async (e)=>{
         e.preventDefault();
-        const file = e.target[1].files[0];
+        if (quizType !== "Multiple Choice" && quizType !== "True or False") {
+            alert("Please select a quiz type to generate a quiz.");
+            return;
+        }
+        const file = e.target[2].files[0];
         if (!file) return alert("Please upload a PDF file");
         try {
             setLoading(true);
@@ -63,7 +68,8 @@ function CreateQuiz() {
                 },
                 body: JSON.stringify({
                     text: extractedText,
-                    numOfQuestions: value
+                    numOfQuestions: value,
+                    quizType: quizType
                 })
             });
             const quizData = await quizRes.json();
@@ -86,6 +92,10 @@ function CreateQuiz() {
     };
     const handleSubmitText = async (e)=>{
         e.preventDefault();
+        if (quizType !== "Multiple Choice" && quizType !== "True or False") {
+            alert("Please select a quiz type to generate a quiz.");
+            return;
+        }
         try {
             setLoadingTwo(true);
             const quizRes = await fetch("/api/gemini-route", {
@@ -95,7 +105,8 @@ function CreateQuiz() {
                 },
                 body: JSON.stringify({
                     text: textValue,
-                    numOfQuestions: value
+                    numOfQuestions: value,
+                    quizType: quizType
                 })
             });
             const quizData = await quizRes.json();
@@ -122,12 +133,47 @@ function CreateQuiz() {
                 children: "Create Quiz by PDF"
             }, void 0, false, {
                 fileName: "[project]/app/create/page.js",
-                lineNumber: 115,
+                lineNumber: 128,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                 onSubmit: handleSubmit,
                 children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                        onChange: (e)=>setQuizType(e.target.value),
+                        className: "formInput",
+                        value: quizType,
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                value: "",
+                                children: "-- Select a quiz type --"
+                            }, void 0, false, {
+                                fileName: "[project]/app/create/page.js",
+                                lineNumber: 135,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                value: "Multiple Choice",
+                                children: "Multiple Choice"
+                            }, void 0, false, {
+                                fileName: "[project]/app/create/page.js",
+                                lineNumber: 136,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                value: "True or False",
+                                children: "True or False"
+                            }, void 0, false, {
+                                fileName: "[project]/app/create/page.js",
+                                lineNumber: 137,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/create/page.js",
+                        lineNumber: 130,
+                        columnNumber: 9
+                    }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                         type: "number",
                         className: "formInput",
@@ -135,7 +181,7 @@ function CreateQuiz() {
                         placeholder: "Enter # questions"
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 118,
+                        lineNumber: 139,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -143,7 +189,7 @@ function CreateQuiz() {
                         className: "formInput"
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 124,
+                        lineNumber: 145,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -152,25 +198,60 @@ function CreateQuiz() {
                         children: loading ? "Processing PDF..." : "Submit PDF"
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 125,
+                        lineNumber: 146,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/create/page.js",
-                lineNumber: 117,
+                lineNumber: 129,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 children: "Create Quiz by Text Input"
             }, void 0, false, {
                 fileName: "[project]/app/create/page.js",
-                lineNumber: 130,
+                lineNumber: 151,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                 onSubmit: handleSubmitText,
                 children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                        onChange: (e)=>setQuizType(e.target.value),
+                        className: "formInput",
+                        value: quizType,
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                value: "",
+                                children: "-- Select a quiz type --"
+                            }, void 0, false, {
+                                fileName: "[project]/app/create/page.js",
+                                lineNumber: 158,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                value: "Multiple Choice",
+                                children: "Multiple Choice"
+                            }, void 0, false, {
+                                fileName: "[project]/app/create/page.js",
+                                lineNumber: 159,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                value: "True or False",
+                                children: "True or False"
+                            }, void 0, false, {
+                                fileName: "[project]/app/create/page.js",
+                                lineNumber: 160,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/create/page.js",
+                        lineNumber: 153,
+                        columnNumber: 9
+                    }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                         type: "number",
                         className: "formInput",
@@ -178,7 +259,7 @@ function CreateQuiz() {
                         placeholder: "Enter # questions"
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 132,
+                        lineNumber: 162,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -188,7 +269,7 @@ function CreateQuiz() {
                         onChange: handleTextChange
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 138,
+                        lineNumber: 168,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -197,23 +278,23 @@ function CreateQuiz() {
                         children: loadingTwo ? "Processing Text..." : "Submit Text"
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 144,
+                        lineNumber: 174,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/create/page.js",
-                lineNumber: 131,
+                lineNumber: 152,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/create/page.js",
-        lineNumber: 114,
+        lineNumber: 126,
         columnNumber: 5
     }, this);
 }
-_s(CreateQuiz, "qiDaX90qJQgzycCsPSb56d7AC00=");
+_s(CreateQuiz, "1b7nFVy/IeyLIZwzb47+N5g8xsk=");
 _c = CreateQuiz;
 var _c;
 __turbopack_context__.k.register(_c, "CreateQuiz");

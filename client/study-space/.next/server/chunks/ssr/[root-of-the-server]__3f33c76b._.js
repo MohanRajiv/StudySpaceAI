@@ -57,9 +57,11 @@ const questionSchema = new __TURBOPACK__imported__module__$5b$externals$5d2f$mon
         type: String,
         required: true
     },
-    answerIndex: {
-        type: Number,
-        required: true
+    answerIndexes: [
+        Number
+    ],
+    questionType: {
+        type: String
     }
 });
 const quizSchema = new __TURBOPACK__imported__module__$5b$externals$5d2f$mongoose__$5b$external$5d$__$28$mongoose$2c$__cjs$29$__["Schema"]({
@@ -73,7 +75,10 @@ const quizSchema = new __TURBOPACK__imported__module__$5b$externals$5d2f$mongoos
     },
     questions: [
         questionSchema
-    ]
+    ],
+    quizType: {
+        type: String
+    }
 });
 const QuizModel = __TURBOPACK__imported__module__$5b$externals$5d2f$mongoose__$5b$external$5d$__$28$mongoose$2c$__cjs$29$__["models"].QuizModel || (0, __TURBOPACK__imported__module__$5b$externals$5d2f$mongoose__$5b$external$5d$__$28$mongoose$2c$__cjs$29$__["model"])("QuizModel", quizSchema);
 const __TURBOPACK__default__export__ = QuizModel;
@@ -174,7 +179,7 @@ async function createQuiz(quizData) {
             question: q.question,
             options: q.options,
             explanation: q.explanation,
-            answerIndex: q.correctAnswer
+            answerIndexes: q.correctAnswer
         }));
     await __TURBOPACK__imported__module__$5b$project$5d2f$modals$2f$quiz$2e$modal$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].create({
         clerkId: userId,

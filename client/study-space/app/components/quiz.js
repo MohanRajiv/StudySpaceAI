@@ -51,7 +51,6 @@ export default function Quiz({text, id}) {
                 )}
                 
             </div>
-
         </div>
     )
 }

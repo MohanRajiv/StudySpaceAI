@@ -35,7 +35,7 @@ export async function createQuiz(quizData) {
       question: q.question,
       options: q.options,
       explanation: q.explanation,
-      answerIndex: q.correctAnswer,
+      answerIndexes: q.correctAnswer,
     }));
   
     await QuizModel.create({

@@ -5,51 +5,72 @@ import { createQuiz } from "@/actions/quiz.action";
 export default function CreateQuiz() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loadingTwo, setLoadingTwo] = useState(false);
-  const [value, setValue] = useState('');
-  const [textValue, setTextValue] = useState('');
-
-  const handleNumberChange = (e) => {
-    setValue(e.target.value);
-  };
-
-  const handleTextChange = (e) => {
-    setTextValue(e.target.value);
-  };
+  const [value, setValue] = useState("");
+  const [textValue, setTextValue] = useState("");
+  const [quizType, setQuizType] = useState("");
+  const [inputType, setInputType] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const file = e.target[1].files[0];
-    if (!file) return alert("Please upload a PDF file");
+
+    if (!quizType) {
+      alert("Please select a quiz type to generate a quiz.");
+      return;
+    }
+
+    if (!inputType) {
+      alert("Please select an input type.");
+      return;
+    }
 
     try {
       setLoading(true);
+      let extractedText = "";
 
-      const formData = new FormData();
-      formData.append("file", file);
-  
-      const res = await fetch("/api/parse-pdf", {
-        method: "POST",
-        body: formData,
-      });
-  
-      const data = await res.json();
-      const extractedText = data.text || "";
+      if (inputType === "PDF") {
+        const file = e.target.querySelector('input[type="file"]').files[0];
+        if (!file) {
+          alert("Please upload a PDF file");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await fetch("/api/parse-pdf", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await res.json();
+        extractedText = data.text || "";
+      } 
+      else if (inputType === "Text") {
+        if (!textValue.trim()) {
+          alert("Please enter text to generate the quiz.");
+          return;
+        }
+        extractedText = textValue;
+      }
 
       const quizRes = await fetch("/api/gemini-route", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: extractedText, numOfQuestions: value}),
+        body: JSON.stringify({
+          text: extractedText,
+          numOfQuestions: value,
+          quizType: quizType,
+        }),
       });
-    
+
       const quizData = await quizRes.json();
-    
+
       let parsedQuiz;
       try {
         const cleanedText = quizData.text
-        .replace(/```json/i, "")
-        .replace(/```/g, "")
-        .trim();
+          .replace(/```json/i, "")
+          .replace(/```/g, "")
+          .trim();
 
         parsedQuiz = JSON.parse(cleanedText);
       } catch (error) {
@@ -60,92 +81,65 @@ export default function CreateQuiz() {
 
       setText(parsedQuiz.quizTitle || "");
       await createQuiz(parsedQuiz);
-    
-    }
-    catch (error){
-      console.log(error);
-    }
-    finally {
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while generating the quiz.");
+    } finally {
       setLoading(false);
     }
-  };  
-
-  const handleSubmitText = async (e) => {
-    e.preventDefault();
-
-    try {
-      setLoadingTwo(true);
-
-      const quizRes = await fetch("/api/gemini-route", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: textValue, numOfQuestions: value}),
-      });
-
-      const quizData = await quizRes.json();
-    
-      let parsedQuiz;
-      try {
-        const cleanedText = quizData.text
-        .replace(/```json/i, "")
-        .replace(/```/g, "")
-        .trim();
-
-        parsedQuiz = JSON.parse(cleanedText);
-      } catch (error) {
-        console.error("Error parsing quizData.text:", error);
-        alert("Failed to parse quiz data — Gemini output wasn't valid JSON");
-        return;
-      }
-
-      setText(parsedQuiz.quizTitle || "");
-      await createQuiz(parsedQuiz);
-
-    }
-    catch (error){
-      console.log(error);
-    }
-    finally {
-        setLoadingTwo(false);
-    }
-  }
+  };
 
   return (
     <div>
-      <div>Create Quiz by PDF</div>
-  
+      <div>Create Quiz</div>
       <form onSubmit={handleSubmit}>
-        <input
-          type="number"
+        <select
+          onChange={(e) => setQuizType(e.target.value)}
           className="formInput"
-          onChange={handleNumberChange}
-          placeholder="Enter # questions"
-        />
-        <input type="file" className="formInput" />
-        <button className="formButton" disabled={loading}>
-          {loading ? "Processing PDF...": "Submit PDF"}
-        </button>
-      </form>
+          value={quizType}
+        >
+          <option value="">-- Select a quiz type --</option>
+          <option value="Multiple Choice">Multiple Choice</option>
+          <option value="True or False">True or False</option>
+          <option value="Mixed Format">Mixed Format</option>
+        </select>
 
-      <div>Create Quiz by Text Input</div>
-      <form onSubmit={handleSubmitText}>
+        <select
+          onChange={(e) => setInputType(e.target.value)}
+          className="formInput"
+          value={inputType}
+        >
+          <option value="">-- Select an input type --</option>
+          <option value="PDF">PDF</option>
+          <option value="Text">Text</option>
+        </select>
+
         <input
           type="number"
+          value={value}
           className="formInput"
-          onChange={handleNumberChange}
-          placeholder="Enter # questions"
+          onChange={(e) => setValue(e.target.value)}
+          placeholder="Enter # of questions"
         />
-        <input 
-          type="text" 
-          className="formInput"
-          placeholder="Enter text" 
-          onChange={handleTextChange}
-        />
-        <button className="formButton" disabled={loadingTwo}>
-          {loadingTwo ? "Processing Text...": "Submit Text"}
+
+        {inputType === "PDF" && (
+          <input type="file" className="formInput" />
+        )}
+
+        {inputType === "Text" && (
+          <input
+            type="text"
+            value={textValue}
+            className="formInput"
+            placeholder="Enter text"
+            onChange={(e) => setTextValue(e.target.value)}
+          />
+        )}
+
+        <button className="formButton" disabled={loading}>
+          {loading ? "Processing..." : "Submit"}
         </button>
       </form>
     </div>
   );
 }
-

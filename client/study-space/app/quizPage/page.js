@@ -39,7 +39,7 @@ export default function QuizPage() {
 
     let score = 0;
     quiz.questions.forEach((q, i) => {
-      if (answers[i] === q.answerIndex) score++;
+      if (answers[i] === q.answerIndexes[0]) score++;
     });
 
     setScoreCount(score);
@@ -52,13 +52,19 @@ export default function QuizPage() {
     <div>
       <h1>{quiz.quizTitle}</h1>
       {submitted && (
-        <h1>Score:{scoreCount}/{quiz.questions.length} </h1>
+        <h1
+          style={{
+            fontWeight:"bold"
+          }}
+        >
+          Score:{scoreCount}/{quiz.questions.length} 
+        </h1>
       )}
 
       <ul>
         {quiz.questions?.map((q, i) => {
           const selected = answers[i];
-          const correct = q.answerIndex;
+          const correct = q.answerIndexes[0];
 
           return (
             <li key={i}>
