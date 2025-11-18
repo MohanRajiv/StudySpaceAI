@@ -1,11 +1,13 @@
 import Quiz from "../components/quiz";
+import Flashcard from "../components/flashcard";
 import { getQuizzes } from "@/actions/quiz.action";
-import Link from "next/link";
-import QuizPage from "../quizPage/page";
+import { getFlashcards } from "@/actions/flashcard.action";
 
 export default async function historyPage(){
     const quizzes = await getQuizzes();
+    const flashcards = await getFlashcards();
     console.log(quizzes);
+    console.log(flashcards);
 
     return (
         <div>
@@ -14,9 +16,18 @@ export default async function historyPage(){
                 {quizzes && quizzes.map(quizzes => {
                     return (
                         <Quiz 
-                        key={quizzes._id}
-                        text={quizzes.quizTitle}
-                        id={quizzes._id}
+                            key={quizzes._id}
+                            text={quizzes.quizTitle + ": " + quizzes.quizType}
+                            id={quizzes._id}
+                        />
+                    );
+                })}
+                {flashcards && flashcards.map(flashcards => {
+                    return (
+                        <Flashcard 
+                            key={flashcards._id}
+                            text={flashcards.flashcardTitle + ": " + flashcards.quizType}
+                            id={flashcards._id}
                         />
                     );
                 })}

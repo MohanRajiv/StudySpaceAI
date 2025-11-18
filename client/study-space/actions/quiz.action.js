@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 import QuizModel from "@/modals/quiz.modal";
 import { auth } from "@clerk/nextjs/server"; 
 import { ObjectId } from "mongodb";
-import quizPage from "@/app/quizPage/page";
 
 /**
  * Get all todos
@@ -36,12 +35,14 @@ export async function createQuiz(quizData) {
       options: q.options,
       explanation: q.explanation,
       answerIndexes: q.correctAnswer,
+      questionType: q.questionType,
     }));
   
     await QuizModel.create({
       clerkId: userId,
       quizTitle: quizData.questions[0]?.quizTitle || "Untitled Quiz",
       questions: formattedQuestions,
+      quizType: quizData.questions[0]?.quizType || "Untitled Option",
     });
   
     revalidatePath("/");

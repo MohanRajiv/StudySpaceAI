@@ -16,7 +16,6 @@ const quizSchema = new Schema({
   quizType: {type: String},
 });
 
-
 const QuizModel = models.QuizModel || model("QuizModel", quizSchema);
 
 export default QuizModel;

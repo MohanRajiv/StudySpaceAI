@@ -179,12 +179,14 @@ async function createQuiz(quizData) {
             question: q.question,
             options: q.options,
             explanation: q.explanation,
-            answerIndexes: q.correctAnswer
+            answerIndexes: q.correctAnswer,
+            questionType: q.questionType
         }));
     await __TURBOPACK__imported__module__$5b$project$5d2f$modals$2f$quiz$2e$modal$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].create({
         clerkId: userId,
         quizTitle: quizData.questions[0]?.quizTitle || "Untitled Quiz",
-        questions: formattedQuestions
+        questions: formattedQuestions,
+        quizType: quizData.questions[0]?.quizType || "Untitled Option"
     });
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$cache$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["revalidatePath"])("/");
 }
@@ -296,7 +298,7 @@ async function historyPage() {
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 children: quizzes && quizzes.map((quizzes)=>{
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$quiz$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
-                        text: quizzes.quizTitle,
+                        text: quizzes.quizTitle + ": " + quizzes.quizType,
                         id: quizzes._id
                     }, quizzes._id, false, {
                         fileName: "[project]/app/history/page.js",

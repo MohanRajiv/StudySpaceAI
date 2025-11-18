@@ -17,7 +17,7 @@ function QuizPage() {
     const searchParams = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSearchParams"])();
     const quiz_id = searchParams.get("quiz_id");
     const [quiz, setQuiz] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [answers, setAnswers] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({});
+    const [answers, setAnswers] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({}); // stores selected answers
     const [submitted, setSubmitted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [scoreCount, setScoreCount] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
@@ -35,12 +35,30 @@ function QuizPage() {
     }, [
         quiz_id
     ]);
-    const handleOptionSelect = (questionIndex, optionIndex)=>{
+    const handleSingleSelect = (questionIndex, optionIndex)=>{
         if (submitted) return;
         setAnswers((prev)=>({
                 ...prev,
-                [questionIndex]: optionIndex
+                [questionIndex]: [
+                    optionIndex
+                ]
             }));
+    };
+    const handleMultipleToggle = (questionIndex, optionIndex)=>{
+        if (submitted) return;
+        setAnswers((prev)=>{
+            const current = prev[questionIndex] || [];
+            return current.includes(optionIndex) ? {
+                ...prev,
+                [questionIndex]: current.filter((x)=>x !== optionIndex)
+            } : {
+                ...prev,
+                [questionIndex]: [
+                    ...current,
+                    optionIndex
+                ]
+            };
+        });
     };
     const handleSubmit = ()=>{
         if (Object.keys(answers).length !== quiz.questions.length) {
@@ -49,7 +67,14 @@ function QuizPage() {
         }
         let score = 0;
         quiz.questions.forEach((q, i)=>{
-            if (answers[i] === q.answerIndexes[0]) score++;
+            const correct = [
+                ...q.answerIndexes
+            ].sort();
+            const selected = [
+                ...answers[i] || []
+            ].sort();
+            const match = correct.length === selected.length && correct.every((val, idx)=>val === selected[idx]);
+            if (match) score++;
         });
         setScoreCount(score);
         setSubmitted(true);
@@ -58,7 +83,7 @@ function QuizPage() {
         children: "Quiz not found"
     }, void 0, false, {
         fileName: "[project]/app/quizPage/page.js",
-        lineNumber: 49,
+        lineNumber: 71,
         columnNumber: 21
     }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -67,29 +92,31 @@ function QuizPage() {
                 children: quiz.quizTitle
             }, void 0, false, {
                 fileName: "[project]/app/quizPage/page.js",
-                lineNumber: 53,
+                lineNumber: 75,
                 columnNumber: 7
             }, this),
-            submitted && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+            submitted && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                 style: {
                     fontWeight: "bold"
                 },
                 children: [
-                    "Score:",
+                    "Score: ",
                     scoreCount,
                     "/",
                     quiz.questions.length
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/quizPage/page.js",
-                lineNumber: 55,
+                lineNumber: 78,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
                 children: quiz.questions?.map((q, i)=>{
-                    const selected = answers[i];
-                    const correct = q.answerIndexes[0];
+                    const selected = answers[i] || [];
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                        style: {
+                            marginBottom: "20px"
+                        },
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 children: [
@@ -99,59 +126,75 @@ function QuizPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/quizPage/page.js",
-                                lineNumber: 71,
+                                lineNumber: 89,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
                                 className: "formInput",
-                                children: [
-                                    q.options.map((opt, optIndex)=>{
-                                        const isSelected = selected === optIndex;
-                                        const isCorrect = submitted && optIndex === correct;
-                                        const isWrong = submitted && isSelected && selected !== correct;
-                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                            onClick: ()=>handleOptionSelect(i, optIndex),
-                                            style: {
-                                                cursor: submitted ? "default" : "pointer",
-                                                fontWeight: isSelected ? "bold" : "normal",
-                                                color: isCorrect ? "green" : isWrong ? "red" : "black"
-                                            },
-                                            children: opt
-                                        }, optIndex, false, {
-                                            fileName: "[project]/app/quizPage/page.js",
-                                            lineNumber: 82,
-                                            columnNumber: 21
-                                        }, this);
-                                    }),
-                                    submitted && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                children: q.options.map((opt, optIndex)=>{
+                                    const isSelected = selected.includes(optIndex);
+                                    const isCorrect = submitted && q.answerIndexes.includes(optIndex);
+                                    const isWrong = submitted && isSelected && !isCorrect;
+                                    const handleClick = q.questionType === "Multiple Answer" ? ()=>handleMultipleToggle(i, optIndex) : ()=>handleSingleSelect(i, optIndex);
+                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                        onClick: handleClick,
                                         style: {
-                                            fontWeight: "bold"
+                                            cursor: submitted ? "default" : "pointer",
+                                            fontWeight: isSelected ? "bold" : "normal",
+                                            color: isCorrect ? "green" : isWrong ? "red" : "black",
+                                            display: "flex",
+                                            alignItems: "center"
                                         },
                                         children: [
-                                            "Explanation: ",
-                                            q.explanation
+                                            q.questionType === "Multiple Answer" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                type: "checkbox",
+                                                checked: isSelected,
+                                                readOnly: true,
+                                                style: {
+                                                    marginRight: "8px"
+                                                }
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/quizPage/page.js",
+                                                lineNumber: 115,
+                                                columnNumber: 25
+                                            }, this),
+                                            opt
                                         ]
-                                    }, void 0, true, {
+                                    }, optIndex, true, {
                                         fileName: "[project]/app/quizPage/page.js",
-                                        lineNumber: 100,
-                                        columnNumber: 17
-                                    }, this)
+                                        lineNumber: 103,
+                                        columnNumber: 21
+                                    }, this);
+                                })
+                            }, void 0, false, {
+                                fileName: "[project]/app/quizPage/page.js",
+                                lineNumber: 91,
+                                columnNumber: 15
+                            }, this),
+                            submitted && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                style: {
+                                    fontWeight: "bold",
+                                    marginTop: "5px"
+                                },
+                                children: [
+                                    "Explanation: ",
+                                    q.explanation
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/quizPage/page.js",
-                                lineNumber: 74,
-                                columnNumber: 15
+                                lineNumber: 129,
+                                columnNumber: 17
                             }, this)
                         ]
                     }, i, true, {
                         fileName: "[project]/app/quizPage/page.js",
-                        lineNumber: 70,
+                        lineNumber: 88,
                         columnNumber: 13
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/app/quizPage/page.js",
-                lineNumber: 64,
+                lineNumber: 83,
                 columnNumber: 7
             }, this),
             !submitted && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -159,13 +202,13 @@ function QuizPage() {
                 children: "Submit Quiz"
             }, void 0, false, {
                 fileName: "[project]/app/quizPage/page.js",
-                lineNumber: 116,
-                columnNumber: 9
+                lineNumber: 138,
+                columnNumber: 22
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/quizPage/page.js",
-        lineNumber: 52,
+        lineNumber: 74,
         columnNumber: 5
     }, this);
 }

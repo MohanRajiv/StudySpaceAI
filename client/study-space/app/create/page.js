@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { createQuiz } from "@/actions/quiz.action";
+import { createFlashcard } from "@/actions/flashcard.action";
 
 export default function CreateQuiz() {
   const [text, setText] = useState("");
@@ -9,6 +10,7 @@ export default function CreateQuiz() {
   const [textValue, setTextValue] = useState("");
   const [quizType, setQuizType] = useState("");
   const [inputType, setInputType] = useState("");
+  const [pdfFiles, setPdfFiles] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,23 +30,29 @@ export default function CreateQuiz() {
       let extractedText = "";
 
       if (inputType === "PDF") {
-        const file = e.target.querySelector('input[type="file"]').files[0];
-        if (!file) {
-          alert("Please upload a PDF file");
+        const files = Array.from(e.target.querySelector('input[type="file"]').files);
+        if (files.length === 0) {
+          alert("Please upload at least one PDF file");
           return;
         }
-
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const res = await fetch("/api/parse-pdf", {
-          method: "POST",
-          body: formData,
-        });
-
-        const data = await res.json();
-        extractedText = data.text || "";
-      } 
+      
+        let combinedText = "";
+      
+        for (const file of files) {
+          const formData = new FormData();
+          formData.append("file", file);
+      
+          const res = await fetch("/api/parse-pdf", {
+            method: "POST",
+            body: formData,
+          });
+      
+          const data = await res.json();
+          combinedText += "\n" + (data.text || "");
+        }
+      
+        extractedText = combinedText.trim();
+      }      
       else if (inputType === "Text") {
         if (!textValue.trim()) {
           alert("Please enter text to generate the quiz.");
@@ -79,8 +87,14 @@ export default function CreateQuiz() {
         return;
       }
 
-      setText(parsedQuiz.quizTitle || "");
-      await createQuiz(parsedQuiz);
+      if (quizType == "Flashcard"){
+        setText(parsedQuiz.flashcardTitle || "");
+        await createFlashcard(parsedQuiz);
+      }
+      else {
+        setText(parsedQuiz.quizTitle || "");
+        await createQuiz(parsedQuiz);
+      }
     } catch (error) {
       console.error(error);
       alert("An error occurred while generating the quiz.");
@@ -101,7 +115,9 @@ export default function CreateQuiz() {
           <option value="">-- Select a quiz type --</option>
           <option value="Multiple Choice">Multiple Choice</option>
           <option value="True or False">True or False</option>
+          <option value="Multiple Answer">Multiple Answer</option>
           <option value="Mixed Format">Mixed Format</option>
+          <option value="Flashcard">Flashcard Set</option>
         </select>
 
         <select
@@ -123,8 +139,22 @@ export default function CreateQuiz() {
         />
 
         {inputType === "PDF" && (
-          <input type="file" className="formInput" />
-        )}
+          <>
+            <input
+              type="file"
+              className="formInput"
+              multiple accept="application/pdf"
+              onChange={(e) => setPdfFiles(Array.from(e.target.files))}
+          />
+          {pdfFiles.length > 0 && (
+            <ul className="fileList">
+              {pdfFiles.map((file, i) => (
+                <li key={i}>{file.name}</li>
+              ))}
+            </ul>
+          )}
+          </>
+        )}      
 
         {inputType === "Text" && (
           <input

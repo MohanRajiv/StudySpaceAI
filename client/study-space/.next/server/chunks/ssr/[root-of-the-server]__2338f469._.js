@@ -179,12 +179,14 @@ async function createQuiz(quizData) {
             question: q.question,
             options: q.options,
             explanation: q.explanation,
-            answerIndexes: q.correctAnswer
+            answerIndexes: q.correctAnswer,
+            questionType: q.questionType
         }));
     await __TURBOPACK__imported__module__$5b$project$5d2f$modals$2f$quiz$2e$modal$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].create({
         clerkId: userId,
         quizTitle: quizData.questions[0]?.quizTitle || "Untitled Quiz",
-        questions: formattedQuestions
+        questions: formattedQuestions,
+        quizType: quizData.questions[0]?.quizType || "Untitled Option"
     });
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$cache$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["revalidatePath"])("/");
 }

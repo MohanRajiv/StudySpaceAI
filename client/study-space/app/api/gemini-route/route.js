@@ -15,17 +15,20 @@ export async function POST(req) {
     const prompt = `
     You are an expert quiz generator. Based on the following text content, 
     generate the specified number of quiz questions based on the number provided and the quiz type provided. Multiple Choice should have 
-    4 options with one correct answer. Mixed Format should combine both multiple choice and True/False as shown below. Include brief 
-    explanations for each answer. IMPORTANT: Return ONLY valid JSON in this exact format (no markdown, no code blocks, no additional text).
+    4 options with one correct answer. Include brief explanations for each answer. Flashcard can be either questions or definitions. 
+    Generate the specified number of flashcards based on the number provided. IMPORTANT: Return ONLY valid JSON in this exact format 
+    (no markdown, no code blocks, no additional text).
     Multiple Choice:
     {
     "questions": [
         {
         "quizTitle": "Quiz Title here",
+        "quizType": "${quizType}",
         "question": "Question text here?",
         "options": ["Option A", "Option B", "Option C", "Option D"],
         "correctAnswer": [0],
-        "explanation": "Brief explanation of why this answer is correct"
+        "explanation": "Brief explanation of why this answer is correct",
+        "questionType": "Multiple Choice"
         }
     ]
     }
@@ -34,32 +37,73 @@ export async function POST(req) {
       "questions": [
           {
           "quizTitle": "Quiz Title here",
+          "quizType": "${quizType}",
           "question": "Question text here?",
           "options": ["True", "False"],
           "correctAnswer": [0],
-          "explanation": "Brief explanation of why this answer is correct"
+          "explanation": "Brief explanation of why this answer is correct",
+          "questionType": "True or False"
           }
+      ]
+    }
+    Multiple Answer: 
+    {
+      "questions": [
+        {
+        "quizTitle": "Quiz Title here",
+        "quizType": "${quizType}",
+        "question": "Question text here?",
+        "options": ["Option A", "Option B", "Option C", "Option D"],
+        "correctAnswer": [0,..],
+        "explanation": "Brief explanation of why this answer is correct",
+        "questionType": "Multiple Answer"
+        }
       ]
     }
     Mixed Format:
     {
       "questions": [
-          {
+        {
           "quizTitle": "Quiz Title here",
+          "quizType": "${quizType}",
           "question": "Question text here?",
           "options": ["Option A", "Option B", "Option C", "Option D"],
           "correctAnswer": [0],
-          "explanation": "Brief explanation of why this answer is correct"
-          }
+          "explanation": "Brief explanation of why this answer is correct",
+          "questionType": "Multiple Choice"
+        }
+        {
+        "quizTitle": "Quiz Title here",
+        "quizType": "${quizType}",
+        "question": "Question text here?",
+        "options": ["True", "False"],
+        "correctAnswer": [0],
+        "explanation": "Brief explanation of why this answer is correct",
+        "questionType": "True or False"
+        }
+        {
+          "quizTitle": "Quiz Title here",
+          "quizType": "${quizType}",
+          "question": "Question text here?",
+          "options": ["Option A", "Option B", "Option C", "Option D"],
+          "correctAnswer": [0,..],
+          "explanation": "Brief explanation of why this answer is correct",
+          "questionType": "Multiple Answer"
+        }
+      ]
+    }
+    Flashcard:
+    {
+      "questions": [
           {
-            "quizTitle": "Quiz Title here",
-            "question": "Question text here?",
-            "options": ["True", "False"],
-            "correctAnswer": [0],
-            "explanation": "Brief explanation of why this answer is correct"
+          "flashcardTitle": "Quiz Title here",
+          "quizType": "${quizType}",
+          "questions": ["Question or Definition Here", "Question or Definition Here"],
+          "answers": ["Answer or Term here", "Answer or Term here"],
           }
       ]
     }
+
     Text to analyze:
     ${text}
     Number of Questions:
