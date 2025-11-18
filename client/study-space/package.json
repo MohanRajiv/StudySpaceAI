@@ -17,7 +17,8 @@
     "pdf2json": "^4.0.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "svix": "^1.77.0"
+    "svix": "^1.77.0",
+    "youtube-transcript-plus": "^1.1.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

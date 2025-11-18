@@ -7,6 +7,7 @@ export default function CreateQuiz() {
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
   const [textValue, setTextValue] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
   const [quizType, setQuizType] = useState("");
   const [inputType, setInputType] = useState("");
 
@@ -42,15 +43,42 @@ export default function CreateQuiz() {
           body: formData,
         });
 
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Failed to parse PDF");
+        }
+
         const data = await res.json();
         extractedText = data.text || "";
-      } 
-      else if (inputType === "Text") {
+      } else if (inputType === "Text") {
         if (!textValue.trim()) {
           alert("Please enter text to generate the quiz.");
           return;
         }
         extractedText = textValue;
+      } else if (inputType === "YouTube") {
+        if (!youtubeUrl.trim()) {
+          alert("Please enter a YouTube URL.");
+          return;
+        }
+
+        const res = await fetch("/api/youtube-route", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: youtubeUrl.trim() }),
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Failed to fetch YouTube transcript");
+        }
+
+        const data = await res.json();
+        extractedText = data.text || "";
+
+        if (!extractedText) {
+          throw new Error("No transcript text was returned from the video.");
+        }
       }
 
       const quizRes = await fetch("/api/gemini-route", {
@@ -83,7 +111,7 @@ export default function CreateQuiz() {
       await createQuiz(parsedQuiz);
     } catch (error) {
       console.error(error);
-      alert("An error occurred while generating the quiz.");
+      alert(error.message || "An error occurred while generating the quiz.");
     } finally {
       setLoading(false);
     }
@@ -112,6 +140,7 @@ export default function CreateQuiz() {
           <option value="">-- Select an input type --</option>
           <option value="PDF">PDF</option>
           <option value="Text">Text</option>
+          <option value="YouTube">YouTube</option>
         </select>
 
         <input
@@ -136,8 +165,18 @@ export default function CreateQuiz() {
           />
         )}
 
+        {inputType === "YouTube" && (
+          <input
+            type="url"
+            value={youtubeUrl}
+            className="formInput"
+            placeholder="Enter YouTube URL (e.g., https://www.youtube.com/watch?v=...)"
+            onChange={(e) => setYoutubeUrl(e.target.value)}
+          />
+        )}
+
         <button className="formButton" disabled={loading}>
-          {loading ? "Processing..." : "Submit"}
+          {loading ? (inputType === "YouTube" ? "Fetching transcript..." : "Processing...") : "Submit"}
         </button>
       </form>
     </div>

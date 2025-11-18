@@ -16,7 +16,10 @@ export async function POST(req) {
     You are an expert quiz generator. Based on the following text content, 
     generate the specified number of quiz questions based on the number provided and the quiz type provided. Multiple Choice should have 
     4 options with one correct answer. Mixed Format should combine both multiple choice and True/False as shown below. Include brief 
-    explanations for each answer. IMPORTANT: Return ONLY valid JSON in this exact format (no markdown, no code blocks, no additional text).
+    explanations for each answer. 
+    
+    CRITICAL: All quiz content (questions, options, explanations, and quiz title) MUST be in English, regardless of the language of the input text.
+    IMPORTANT: Return ONLY valid JSON in this exact format (no markdown, no code blocks, no additional text).
     Multiple Choice:
     {
     "questions": [
