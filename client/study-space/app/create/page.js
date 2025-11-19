@@ -85,6 +85,50 @@ export default function CreateQuiz() {
           throw new Error("No transcript text was returned from the video.");
         }
       }
+      else if (inputType === "Multimodal") {
+        let combinedText = "";
+        const files = Array.from(e.target.querySelector('input[type="file"]').files);
+
+        if ((files.length == 0) && !(textValue.trim()) && !(youtubeUrl.trim())){
+          alert("Please enter a input.");
+          return;
+        }
+
+        if (files.length != 0) {
+          for (const file of files) {
+            const formData = new FormData();
+            formData.append("file", file);
+        
+            const res = await fetch("/api/parse-pdf", {
+              method: "POST",
+              body: formData,
+            });
+        
+            const data = await res.json();
+            combinedText += "\n" + (data.text || "");
+          }
+        }
+        if (textValue.trim()) {
+          combinedText += "\n" + textValue;
+        }
+        if (youtubeUrl.trim()) {
+          const res = await fetch("/api/youtube-route", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: youtubeUrl.trim() }),
+          });
+  
+          if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.error || "Failed to fetch YouTube transcript");
+          }
+  
+          const data = await res.json();
+          combinedText += "\n" + (data.text || "");
+        }
+        
+        extractedText = combinedText.trim();
+      }
 
       const quizRes = await fetch("/api/gemini-route", {
         method: "POST",
@@ -154,6 +198,7 @@ export default function CreateQuiz() {
           <option value="PDF">PDF</option>
           <option value="Text">Text</option>
           <option value="YouTube">YouTube</option>
+          <option value="Multimodal">Multimodal</option>
         </select>
 
         <input
@@ -164,25 +209,18 @@ export default function CreateQuiz() {
           placeholder="Enter # of questions"
         />
 
-        {inputType === "PDF" && (
+        {(inputType === "PDF" || inputType === "Multimodal") && (
           <>
             <input
               type="file"
               className="formInput"
               multiple accept="application/pdf"
               onChange={(e) => setPdfFiles(Array.from(e.target.files))}
-          />
-          {pdfFiles.length > 0 && (
-            <ul className="fileList">
-              {pdfFiles.map((file, i) => (
-                <li key={i}>{file.name}</li>
-              ))}
-            </ul>
-          )}
+            />
           </>
         )}      
 
-        {inputType === "Text" && (
+        {(inputType === "Text" || inputType === "Multimodal") && (
           <input
             type="text"
             value={textValue}
@@ -192,7 +230,7 @@ export default function CreateQuiz() {
           />
         )}
 
-        {inputType === "YouTube" && (
+        {(inputType === "YouTube" || inputType === "Multimodal") && (
           <input
             type="url"
             value={youtubeUrl}
