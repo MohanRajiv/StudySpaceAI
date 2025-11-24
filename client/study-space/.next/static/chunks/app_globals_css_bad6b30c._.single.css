@@ -5,6 +5,7 @@
       --tw-border-style: solid;
       --tw-font-weight: initial;
       --tw-tracking: initial;
+      --tw-duration: initial;
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;
@@ -24,6 +25,7 @@
       --tw-border-style: solid;
       --tw-font-weight: initial;
       --tw-tracking: initial;
+      --tw-duration: initial;
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;
@@ -411,8 +413,38 @@
     grid-row-start: 2;
   }
 
-  .row-start-3 {
-    grid-row-start: 3;
+  .container {
+    width: 100%;
+  }
+
+  @media (min-width: 40rem) {
+    .container {
+      max-width: 40rem;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .container {
+      max-width: 48rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .container {
+      max-width: 64rem;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .container {
+      max-width: 80rem;
+    }
+  }
+
+  @media (min-width: 96rem) {
+    .container {
+      max-width: 96rem;
+    }
   }
 
   .mb-2 {
@@ -439,6 +471,14 @@
     width: 100%;
   }
 
+  .rotate-0 {
+    rotate: none;
+  }
+
+  .rotate-180 {
+    rotate: 180deg;
+  }
+
   .list-inside {
     list-style-position: inside;
   }
@@ -455,12 +495,12 @@
     flex-direction: column;
   }
 
-  .flex-wrap {
-    flex-wrap: wrap;
-  }
-
   .items-center {
     align-items: center;
+  }
+
+  .justify-between {
+    justify-content: space-between;
   }
 
   .justify-center {
@@ -481,10 +521,6 @@
 
   .gap-16 {
     gap: calc(var(--spacing) * 16);
-  }
-
-  .gap-\[24px\] {
-    gap: 24px;
   }
 
   .gap-\[32px\] {
@@ -609,6 +645,17 @@
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
 
+  .transition-transform {
+    transition-property: transform, translate, scale, rotate;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+
+  .duration-300 {
+    --tw-duration: .3s;
+    transition-duration: .3s;
+  }
+
   @media (hover: hover) {
     .hover\:border-transparent:hover {
       border-color: rgba(0, 0, 0, 0);
@@ -624,19 +671,6 @@
   @media (hover: hover) {
     .hover\:bg-\[\#f2f2f2\]:hover {
       background-color: #f2f2f2;
-    }
-  }
-
-  @media (hover: hover) {
-    .hover\:underline:hover {
-      -webkit-text-decoration-line: underline;
-      text-decoration-line: underline;
-    }
-  }
-
-  @media (hover: hover) {
-    .hover\:underline-offset-4:hover {
-      text-underline-offset: 4px;
     }
   }
 
@@ -745,7 +779,14 @@
 
 :root {
   --background: #b3b0b0;
+  --backgroundTest: #5d5a9d;
   --foreground: #171717;
+  --base-clr: #11121a;
+  --line-clr: #42434a;
+  --hover-clr: #222533;
+  --text-clr: #e6e6ef;
+  --accent-clr: #5e63ff;
+  --secondary-text-clr: #b0b3c1;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -756,21 +797,31 @@
 }
 
 body {
-  background: var(--background);
+  background: var(--backgroundTest);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .currentLink {
-  color: #fff;
+  color: var(--accent-clr);
 }
 
 .notCurrentLink {
-  color: #3d1ed6;
+  color: var(--text-clr);
 }
 
 .centerLinks {
-  text-align: center;
+  color: #fff;
+  z-index: 50;
+  align-items: center;
+  gap: 10px;
+  font-family: Poppins;
+  transition: left .3s;
+  display: flex;
+  position: fixed;
+  top: 6%;
+  left: calc(1230px + 2rem);
+  transform: translateY(-50%);
 }
 
 a {
@@ -810,6 +861,7 @@ a {
   gap: 15px;
   width: 50%;
   padding: 20px;
+  font-family: Poppins;
   display: flex;
   position: fixed;
   top: 200px;
@@ -983,6 +1035,148 @@ a {
   border-radius: 8px;
 }
 
+.layout {
+  min-height: calc(100vh - 60px);
+  display: flex;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.sidebar {
+  background-color: var(--base-clr);
+  color: var(--text-clr);
+  border-right: 1px solid var(--text-clr);
+  box-sizing: border-box;
+  flex-direction: column;
+  align-self: start;
+  width: 230px;
+  height: 100vh;
+  margin: 0;
+  padding: 5px 1em;
+  font-family: Poppins;
+  line-height: 1.5rem;
+  transition: all .3s ease-in-out;
+  display: flex;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+.sidebarClose {
+  width: 60px;
+  padding: 7px;
+}
+
+.sidebar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar ul li {
+  margin-bottom: 16px;
+}
+
+.sidebar > ul > li:first-child {
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+}
+
+.SideBySide {
+  border-radius: 6px;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+}
+
+.SideBySide:hover {
+  background-color: var(--hover-clr);
+}
+
+.icon-wrapper {
+  cursor: pointer;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  display: inline-flex;
+}
+
+.icon-wrapper:hover svg {
+  color: var(--accent-clr);
+  background-color: var(--hover-clr);
+}
+
+.history-quiz-list {
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+  display: flex;
+}
+
+.history-quiz-padding-bottom {
+  padding-bottom: 8px;
+}
+
+.history-quiz-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  flex-direction: column;
+  width: 17rem;
+  height: 15rem;
+  font-size: .7rem;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.quiz-top {
+  background: #fff;
+  flex: 1;
+}
+
+.quiz-bottom {
+  color: #fff;
+  text-align: center;
+  background-color: #000;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem;
+  display: flex;
+}
+
+.quiz-buttons {
+  gap: .5rem;
+  display: flex;
+}
+
+.youtube-thumb {
+  padding: 0;
+  position: relative;
+}
+
+.youtube-thumbnail {
+  object-fit: cover;
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+}
+
 @property --tw-border-style {
   syntax: "*";
   inherits: false;
@@ -995,6 +1189,11 @@ a {
 }
 
 @property --tw-tracking {
+  syntax: "*";
+  inherits: false
+}
+
+@property --tw-duration {
   syntax: "*";
   inherits: false
 }

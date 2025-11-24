@@ -3,53 +3,59 @@ import { useState } from "react"
 import { deleteQuiz, updateQuiz } from "@/actions/quiz.action";
 import Link from "next/link";
 
-export default function Quiz({text, id}) {
+export default function Quiz({ text, id }) {
     const [showUpdateInput, setShowUpdateInput] = useState(false);
     const [newText, setNewText] = useState(text);
 
     const handleUpdate = (e) => {
         e.preventDefault();
         updateQuiz(id, newText);
-        setShowUpdateInput(!showUpdateInput);
+        setShowUpdateInput(false);
     };
 
     return (
-        <div className="formInput">
-            <div>
-            <Link key={id} href={`quizPage?quiz_id=${id}`} className="quizHover">
-                {text}
-            </Link>
+        <div className="history-quiz-item">
+            {/* Top section: optional image or icon */}
+            <div className="quiz-top">
+                {/* You can add an image or icon here */}
             </div>
-            {showUpdateInput && (
-                <input
-                    value={newText}
-                    onChange={(e) => setNewText(e.target.value)}
-                    type="text"
-                    className="formInput"
-                />
-            )}
 
-            <div>
-                {showUpdateInput ? (
-                    <button onClick={() => setShowUpdateInput(!showUpdateInput)}>
-                        Cancel
-                    </button>
-                ) : (
-                    <button onClick={() => deleteQuiz(id)}>
-                        Delete
-                    </button>
+            {/* Bottom section: black background with text and buttons */}
+            <div className="quiz-bottom">
+                <Link key={id} href={`quizPage?quiz_id=${id}`} className="quizHover">
+                    {text}
+                </Link>
+
+                {showUpdateInput && (
+                    <input
+                        value={newText}
+                        onChange={(e) => setNewText(e.target.value)}
+                        type="text"
+                        className="formInput"
+                    />
                 )}
 
-                {showUpdateInput ? (
-                    <button onClick={handleUpdate}>
-                        Save
-                    </button>
-                ) : (
-                    <button onClick={() => setShowUpdateInput(!showUpdateInput)}>
-                        Update
-                    </button>
-                )}
-                
+                <div className="quiz-buttons">
+                    {showUpdateInput ? (
+                        <>
+                            <button onClick={() => setShowUpdateInput(false)}>
+                                Cancel
+                            </button>
+                            <button onClick={handleUpdate}>
+                                Save
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <button onClick={() => deleteQuiz(id)}>
+                                Delete
+                            </button>
+                            <button onClick={() => setShowUpdateInput(true)}>
+                                Update
+                            </button>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     )

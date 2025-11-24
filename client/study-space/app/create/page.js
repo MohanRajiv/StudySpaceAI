@@ -58,6 +58,15 @@ export default function CreateQuiz() {
     setYoutubeBarVisible(false);
   }
 
+  const extractYouTubeId = (url) => {
+    try {
+      const match = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+      return match ? match[1] : null;
+    } catch {
+      return null;
+    }
+  };  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -238,7 +247,9 @@ export default function CreateQuiz() {
         {YoutubeBarVisible && (
         <div className="youtube-bar-container">
           <div className="youtube-controls">
-            <SiYoutube size={30} />
+            <SiYoutube size={30} 
+              color="red"
+            />
             <input 
               type="text" 
               placeholder="Enter your YouTube URL here" 
@@ -269,16 +280,24 @@ export default function CreateQuiz() {
           )}
 
           {YoutubeVideoDisplay && (
-            <div className="pdf-file-item">
-              Youtube Video Placeholder
-              <button
-                type="button"
-                className="clear-pdf-btn"
-                onClick={deleteYoutubeVideoDisplay}
-              >
-                <FaTimes />
-              </button>
-            </div>
+          <div className="pdf-file-item youtube-thumb">
+            {extractYouTubeId(youtubeUrl) ? (
+            <img
+              src={`https://img.youtube.com/vi/${extractYouTubeId(youtubeUrl)}/0.jpg`}
+              alt="YouTube Thumbnail"
+              className="youtube-thumbnail"
+            />
+            ) : (
+              "Invalid YouTube Link"
+            )}
+            <button
+              type="button"
+              className="clear-pdf-btn"
+              onClick={deleteYoutubeVideoDisplay}
+            >
+              <FaTimes />
+            </button>
+          </div>
           )}
         </div>
 

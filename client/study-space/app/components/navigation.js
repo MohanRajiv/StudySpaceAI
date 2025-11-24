@@ -2,38 +2,36 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignInButton, UserButton, SignedIn, SignedOut} from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
+import { FiBell } from "react-icons/fi";
 
 export const Navigation = () => {
   const pathname = usePathname();
+  const { user } = useUser();
+  const firstName = user.firstName;
 
   return (
     <nav className="centerLinks">
-      <Link
-        href="/"
-        className={pathname === "/" ? "currentLink" : "notCurrentLink"}
-      >
-        Home
-      </Link>
-
       <SignedOut>
         <SignInButton mode = "modal" />
       </SignedOut>
       <SignedIn>
-      <Link
-        href="/create"
-        className={pathname === "/create" ? "currentLink" : "notCurrentLink"}
-      >
-        Create
-      </Link>
-
-      <Link
-        href="/history"
-        className={pathname === "/history" ? "currentLink" : "notCurrentLink"}
-      >
-        History
-      </Link>
-
-        <UserButton />
+        <FiBell 
+          size={25}
+          color="white"
+        />
+        <p>{firstName}</p>
+      
+        <UserButton
+        appearance={{
+          elements: {
+            avatarBox: {
+              width: "35px",
+              height: "35px",
+            },
+          },
+        }}
+        />
       </SignedIn>
     </nav>
   );
