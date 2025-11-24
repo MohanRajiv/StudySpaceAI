@@ -1,17 +1,62 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { createQuiz } from "@/actions/quiz.action";
 import { createFlashcard } from "@/actions/flashcard.action";
+
+// Icons
+import { BsArrowUpCircleFill } from "react-icons/bs";
+import { SiYoutube } from "react-icons/si";
+import { IoTrashSharp } from "react-icons/io5";
+import { GrAdd } from "react-icons/gr";
+import {FaTimes } from "react-icons/fa";
+import { HiCheck } from "react-icons/hi";
 
 export default function CreateQuiz() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState("");
+  const [number, setNumber] = useState("");
   const [textValue, setTextValue] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [quizType, setQuizType] = useState("");
-  const [inputType, setInputType] = useState("");
+  const [questionType, setQuestionType] = useState("");
   const [pdfFiles, setPdfFiles] = useState([]);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [YoutubeBarVisible, setYoutubeBarVisible] = useState(false);
+  const [YoutubeVideoDisplay, setYoutubeVideoDisplay] = useState(false);
+  const pdfPickerRef = useRef(null);
+
+  const toggleDropdown = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
+
+  const toggleYoutubeBar = () => {
+    if (!YoutubeBarVisible) {
+      setYoutubeBarVisible(true);
+      setDropdownVisible(false);
+    } else {
+      setYoutubeBarVisible(false);
+    }
+  };
+
+  const deleteYoutubeBar = () => {
+    setYoutubeUrl("");
+    setYoutubeBarVisible(false);
+  };
+
+  const deleteYoutubeVideoDisplay = () => {
+    setYoutubeUrl("");
+    setYoutubeVideoDisplay(false);
+  };
+
+  const toggleYoutubeDisplay = (value) => {
+    if (!value.trim()) {
+      alert("Please enter a YouTube URL.");
+      return;
+    }
+    setYoutubeUrl(value);
+    setYoutubeVideoDisplay(true);
+    setYoutubeBarVisible(false);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,122 +66,71 @@ export default function CreateQuiz() {
       return;
     }
 
-    if (!inputType) {
-      alert("Please select an input type.");
+    if (!questionType) {
+      alert("Please select an question type to generate a quiz.");
+      return;
+    }
+
+    if (!number) {
+      alert("Please select a number of questions/flashcards to generate a quiz.");
       return;
     }
 
     try {
-      setLoading(true);
-      let extractedText = "";
+        setLoading(true);
 
-      if (inputType === "PDF") {
-        const files = Array.from(e.target.querySelector('input[type="file"]').files);
-        if (files.length === 0) {
-          alert("Please upload at least one PDF file");
-          return;
-        }
-      
         let combinedText = "";
-      
-        for (const file of files) {
-          const formData = new FormData();
-          formData.append("file", file);
-      
-          const res = await fetch("/api/parse-pdf", {
-            method: "POST",
-            body: formData,
-          });
-      
-          const data = await res.json();
-          combinedText += "\n" + (data.text || "");
-        }
-      
-        extractedText = combinedText.trim();
-      }      
-      else if (inputType === "Text") {
-        if (!textValue.trim()) {
-          alert("Please enter text to generate the quiz.");
-          return;
-        }
-        extractedText = textValue;
-      }
-      else if (inputType === "YouTube") {
-        if (!youtubeUrl.trim()) {
-          alert("Please enter a YouTube URL.");
+        const files = pdfFiles;
+
+        if (files.length === 0 && !textValue.trim() && !youtubeUrl.trim()) {
+          alert("Please enter an input.");
+          setLoading(false);
           return;
         }
 
-        const res = await fetch("/api/youtube-route", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url: youtubeUrl.trim() }),
-        });
-
-        if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(errorData.error || "Failed to fetch YouTube transcript");
-        }
-
-        const data = await res.json();
-        extractedText = data.text || "";
-
-        if (!extractedText) {
-          throw new Error("No transcript text was returned from the video.");
-        }
-      }
-      else if (inputType === "Multimodal") {
-        let combinedText = "";
-        const files = Array.from(e.target.querySelector('input[type="file"]').files);
-
-        if ((files.length == 0) && !(textValue.trim()) && !(youtubeUrl.trim())){
-          alert("Please enter a input.");
-          return;
-        }
-
-        if (files.length != 0) {
+        if (files.length !== 0) {
           for (const file of files) {
             const formData = new FormData();
             formData.append("file", file);
-        
+
             const res = await fetch("/api/parse-pdf", {
               method: "POST",
               body: formData,
             });
-        
+
             const data = await res.json();
             combinedText += "\n" + (data.text || "");
           }
         }
+
         if (textValue.trim()) {
           combinedText += "\n" + textValue;
         }
+
         if (youtubeUrl.trim()) {
           const res = await fetch("/api/youtube-route", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ url: youtubeUrl.trim() }),
           });
-  
+
           if (!res.ok) {
             const errorData = await res.json();
             throw new Error(errorData.error || "Failed to fetch YouTube transcript");
           }
-  
+
           const data = await res.json();
           combinedText += "\n" + (data.text || "");
         }
-        
-        extractedText = combinedText.trim();
-      }
 
       const quizRes = await fetch("/api/gemini-route", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          text: extractedText,
-          numOfQuestions: value,
+          text: combinedText.trim(),
+          numOfQuestions: number,
           quizType: quizType,
+          questionType: questionType,
         }),
       });
 
@@ -156,11 +150,10 @@ export default function CreateQuiz() {
         return;
       }
 
-      if (quizType == "Flashcard"){
+      if (quizType === "Flashcard") {
         setText(parsedQuiz.flashcardTitle || "");
         await createFlashcard(parsedQuiz);
-      }
-      else {
+      } else {
         setText(parsedQuiz.quizTitle || "");
         await createQuiz(parsedQuiz);
       }
@@ -174,76 +167,154 @@ export default function CreateQuiz() {
 
   return (
     <div>
-      <div>Create Quiz</div>
-      <form onSubmit={handleSubmit}>
+      <input
+        type="file"
+        accept="application/pdf"
+        ref={pdfPickerRef}
+        style={{ display: "none" }}
+        multiple
+        onChange={(e) => setPdfFiles(Array.from(e.target.files))}
+      />
+
+      <div className="create-bar-container">
+        <h4 className="main-text">Generate a Quiz</h4>
         <select
           onChange={(e) => setQuizType(e.target.value)}
-          className="formInput"
+          className="input-quiz-option-main"
           value={quizType}
         >
           <option value="">-- Select a quiz type --</option>
-          <option value="Multiple Choice">Multiple Choice</option>
-          <option value="True or False">True or False</option>
-          <option value="Multiple Answer">Multiple Answer</option>
-          <option value="Mixed Format">Mixed Format</option>
+          <option value="Quiz">Quiz</option>
           <option value="Flashcard">Flashcard Set</option>
         </select>
 
-        <select
-          onChange={(e) => setInputType(e.target.value)}
-          className="formInput"
-          value={inputType}
-        >
-          <option value="">-- Select an input type --</option>
-          <option value="PDF">PDF</option>
-          <option value="Text">Text</option>
-          <option value="YouTube">YouTube</option>
-          <option value="Multimodal">Multimodal</option>
-        </select>
+        {quizType == "Quiz" && (
+          <div>
+          <select
+            className="input-quiz-option-secondary"
+            onChange={(e)=> setQuestionType(e.target.value)}
+            value={questionType}
+          >
+            <option value="">-- Select a question type --</option>
+            <option value="Multiple Choice">Multiple Choice</option>
+            <option value="True or False">True or False</option>
+            <option value="Multiple Answer">Multiple Answer</option>
+            <option value="Mixed Format">Mixed Format</option>
+          </select>
 
-        <input
-          type="number"
-          value={value}
-          className="formInput"
-          onChange={(e) => setValue(e.target.value)}
-          placeholder="Enter # of questions"
-        />
+          <input
+            type="number"
+            className="input-quiz-option-secondary-two"
+            placeholder="# of questions"
+            onChange={(e)=> setNumber(e.target.value)}
+            value={number}
+          />
+          </div>
+        )}
 
-        {(inputType === "PDF" || inputType === "Multimodal") && (
-          <>
-            <input
-              type="file"
-              className="formInput"
-              multiple accept="application/pdf"
-              onChange={(e) => setPdfFiles(Array.from(e.target.files))}
+        {quizType == "Flashcard" && (
+          <div>
+          <select
+            className="input-quiz-option-secondary"
+            onChange={(e)=> setQuestionType(e.target.value)}
+            value={questionType}
+          >
+            <option value="">-- Select a Flashcard type --</option>
+            <option value="Definitions">Definitions</option>
+            <option value="Questions">Questions</option>
+            <option value="Random Flashcards">Random Flashcards</option>
+          </select>
+
+          <input
+            type="number"
+            className="input-quiz-option-secondary-two"
+            placeholder="# of flashcards"
+            onChange={(e)=> setNumber(e.target.value)}
+            value={number}
+          />
+          </div>
+        )}
+
+        {YoutubeBarVisible && (
+        <div className="youtube-bar-container">
+          <div className="youtube-controls">
+            <SiYoutube size={30} />
+            <input 
+              type="text" 
+              placeholder="Enter your YouTube URL here" 
+              value={youtubeUrl}
+              onChange={(e) => setYoutubeUrl(e.target.value)}
+              className="youtube-Bar"
             />
-          </>
-        )}      
+            <IoTrashSharp size={35} onClick={deleteYoutubeBar} />
+            <HiCheck size={40} onClick={() => toggleYoutubeDisplay(youtubeUrl)} />
+          </div>
+        </div>
+        )}
+      <div className="search-bar-container">
+        <div className={`pdf-file-list ${pdfFiles.length > 0 || YoutubeVideoDisplay ? "pdf-padding-bottom" : ""}`}>
+          {pdfFiles.length > 0 && (
+            pdfFiles.map((file, i) => (
+            <div key={i} className="pdf-file-item">
+              {file.name}
+              <button
+                type="button"
+                className="clear-pdf-btn"
+                onClick={() => setPdfFiles(prev => prev.filter((_, index) => index !== i))}
+              >
+                <FaTimes />
+              </button>
+            </div>
+            ))
+          )}
 
-        {(inputType === "Text" || inputType === "Multimodal") && (
-          <input
-            type="text"
+          {YoutubeVideoDisplay && (
+            <div className="pdf-file-item">
+              Youtube Video Placeholder
+              <button
+                type="button"
+                className="clear-pdf-btn"
+                onClick={deleteYoutubeVideoDisplay}
+              >
+                <FaTimes />
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="search-controls">
+          <GrAdd size={20} onClick={toggleDropdown} />
+          {dropdownVisible && (
+            <div className="dropdown-menu">
+              <div
+                className="dropdown-item"
+                onClick={() => {
+                  pdfPickerRef.current?.click();
+                  setDropdownVisible(false);
+                }}
+              >
+                Add PDF File
+              </div>
+              <div className="dropdown-item" onClick={toggleYoutubeBar}>
+                Add Youtube Video
+              </div>
+            </div>
+          )}
+
+          <input 
+            type="text" 
+            placeholder="Enter your notes here" 
+            onChange={(e)=> setTextValue(e.target.value)}
             value={textValue}
-            className="formInput"
-            placeholder="Enter text"
-            onChange={(e) => setTextValue(e.target.value)}
           />
-        )}
-
-        {(inputType === "YouTube" || inputType === "Multimodal") && (
-          <input
-            type="url"
-            value={youtubeUrl}
-            className="formInput"
-            placeholder="Enter YouTube URL (e.g., https://www.youtube.com/watch?v=...)"
-            onChange={(e) => setYoutubeUrl(e.target.value)}
-          />
-        )}
-
-        <button className="formButton" disabled={loading}>
-          {loading ? "Processing..." : "Submit"}
-        </button>
-      </form>
+            <BsArrowUpCircleFill
+              size={30}
+              color={loading ? "grey" : "black"}
+              onClick={handleSubmit}
+            />
+        </div>
+      </div>
+      </div>
     </div>
   );
 }

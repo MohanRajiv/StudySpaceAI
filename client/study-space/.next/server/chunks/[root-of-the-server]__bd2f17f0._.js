@@ -63,7 +63,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$serv
 ;
 async function POST(req) {
     try {
-        const { text, numOfQuestions, quizType } = await req.json();
+        const { text, numOfQuestions, quizType, questionType } = await req.json();
         if (!text || !numOfQuestions) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 error: "No text or number input provided"
@@ -76,11 +76,14 @@ async function POST(req) {
             model: "gemini-2.5-flash"
         });
         const prompt = `
-    You are an expert quiz generator. Based on the following text content, 
-    generate the specified number of quiz questions based on the number provided and the quiz type provided. Multiple Choice should have 
-    4 options with one correct answer. Include brief explanations for each answer. Flashcard can be either questions or definitions. 
-    Generate the specified number of flashcards based on the number provided. IMPORTANT: Return ONLY valid JSON in this exact format 
-    (no markdown, no code blocks, no additional text).
+    You are an expert quiz/flashcard generator. Based on the following text content, 
+    generate ${numOfQuestions} questions or flashcards. Below are the different 
+    kinds of question types. If quizType is "Quiz", it has the following question 
+    types which are "Multiple Choice, True or False, Multiple Answer, Mixed Format".
+    If quizType is "Flashcard Set" it has the following question types which are 
+    "Definitions, Questions, Random Flashcards". Multiple Choice should have 
+    4 options with one correct answer. Include brief explanations for each answer. 
+    IMPORTANT: Return ONLY valid JSON in this exact format (no markdown, no code blocks, no additional text).
     Multiple Choice:
     {
     "questions": [
@@ -155,7 +158,31 @@ async function POST(req) {
         }
       ]
     }
-    Flashcard:
+    Definitions:
+    {
+      "questions": [
+          {
+          "flashcardTitle": "Quiz Title here",
+          "quizType": "${quizType}",
+          "questions": ["Definition Here", "Definition Here"],
+          "answers": ["Term here", "Term here"],
+          }
+      ]
+    }
+
+    Questions:
+    {
+      "questions": [
+          {
+          "flashcardTitle": "Quiz Title here",
+          "quizType": "${quizType}",
+          "questions": ["Question Here", "Question Here"],
+          "answers": ["Answer here", "Answer here"],
+          }
+      ]
+    }
+
+    Random Flashcards:
     {
       "questions": [
           {
@@ -173,6 +200,8 @@ async function POST(req) {
     ${numOfQuestions}
     Quiz Type:
     ${quizType}
+    Question Type:
+    ${questionType}
     `;
         const result = await model.generateContent(prompt);
         const output = result.response.text();

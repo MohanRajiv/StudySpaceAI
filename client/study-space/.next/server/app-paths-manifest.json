@@ -6,7 +6,6 @@
   "/api/users/route": "app/api/users/route.js",
   "/api/youtube-route/route": "app/api/youtube-route/route.js",
   "/create/page": "app/create/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/flashcardPage/page": "app/flashcardPage/page.js",
   "/history/page": "app/history/page.js",
   "/page": "app/page.js",
