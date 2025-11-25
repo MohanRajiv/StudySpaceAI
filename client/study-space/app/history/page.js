@@ -11,8 +11,8 @@ export default async function historyPage(){
 
     return (
         <div>
-            <h1>Quizzes</h1>
-            <h3>View your quizzes</h3>
+            <h1 className="quizPageTextMain">Quizzes</h1>
+            <h3 className="quizPageTextSecondary">View your quizzes here</h3>
             <div className="history-quiz-list">
                 {quizzes && quizzes.map(quizzes => {
                     return (

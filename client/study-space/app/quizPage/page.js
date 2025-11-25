@@ -72,10 +72,10 @@ export default function QuizPage() {
 
   return (
     <div>
-      <h1>{quiz.quizTitle}</h1>
+      <h1 className="quizPageTitleText">{quiz.quizTitle}</h1>
 
       {submitted && (
-        <h2 style={{ fontWeight: "bold" }}>
+        <h2 className="score">
           Score: {scoreCount}/{quiz.questions.length}
         </h2>
       )}
@@ -86,9 +86,9 @@ export default function QuizPage() {
 
           return (
             <li key={i} style={{ marginBottom: "20px" }}>
-              <p>{i + 1}. {q.question}</p>
+              <p className="quizPageQuestionText">{i + 1}. {q.question}</p>
 
-              <ul className="formInput">
+              <ul className="quizPageOptions">
                 {q.options.map((opt, optIndex) => {
                   const isSelected = selected.includes(optIndex);
                   const isCorrect = submitted && q.answerIndexes.includes(optIndex);
@@ -106,7 +106,7 @@ export default function QuizPage() {
                       style={{
                         cursor: submitted ? "default" : "pointer",
                         fontWeight: isSelected ? "bold" : "normal",
-                        color: isCorrect ? "green" : isWrong ? "red" : "black",
+                        color: isCorrect ? "green" : isWrong ? "red" : "white",
                         display: "flex",
                         alignItems: "center"
                       }}
@@ -135,7 +135,7 @@ export default function QuizPage() {
         })}
       </ul>
 
-      {!submitted && <button onClick={handleSubmit}>Submit Quiz</button>}
+      {!submitted && <button className="submitQuizButton" onClick={handleSubmit}>Submit Quiz</button>}
     </div>
   );
 }

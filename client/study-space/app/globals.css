@@ -3,7 +3,7 @@
 
 :root {
   --background: #b3b0b0;
-  --backgroundTest: #5d5a9d;
+  --backgroundTest: #42434a;
   --foreground: #171717;
   --base-clr: #11121a;
   --line-clr: #42434a;
@@ -46,7 +46,7 @@ body {
   color: white;
   position: fixed;
   top:6%;                     
-  left: calc(1230px + 2rem);     
+  left: calc(1340px + 2rem);     
   transform: translateY(-50%);
   z-index: 50;
   transition: left 0.3s ease; 
@@ -57,6 +57,27 @@ body {
 
 a {
   margin-right: 10px;
+}
+
+.centerText {
+  margin-left: -5rem;
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;   
+  align-items: center;      
+  justify-content: center;  
+  font-family: Poppins;
+}
+
+.headerText {
+  font-size:50px;
+  font-weight: bold;
+  color: white;
+}
+
+.secondaryHeaderText {
+  font-size:20px;
+  color: grey;
 }
 
 .formInput {
@@ -80,23 +101,36 @@ a {
 }
 
 .quizHover:hover{
-  background-color: rgb(164, 162, 162);
+  background-color: var(--hover-clr);
+}
+
+.quizPageTextMain {
+  font-size:30px;
+  font-weight: bold;
+  color: white;
+}
+
+.quizPageTextSecondary {
+  font-size:20px;
+  color: grey;
 }
 
 .create-bar-container {
-  position: fixed;
-  top: 200px;
-  left: 27%;
+  position: absolute;
+  margin-left: 14rem;
+  top: 230px;
   width: 50%;
-  border: 2px solid rgb(0, 0, 0);
+  border: 2px solid var(--text-clr);
   border-radius: 15px;
   padding: 20px;     
-  background-color: white;
+  background-color: var(--base-clr);
   display: flex;
   flex-direction: column;
   gap: 15px;         
   box-sizing: border-box;
   font-family: Poppins;
+  justify-content: center;  
+  color: var(--accent-clr);
 }
 
 /*Search bar Css*/
@@ -129,6 +163,7 @@ a {
   padding: 0px 15px;
   outline: none;
   font-size: 1rem;
+  color: black;
 }
 
 /*Search bar dropdown css*/
@@ -169,6 +204,7 @@ a {
   transition: height 0.3s ease;
   position: relative;
   width: 100%;
+  color: black;
 }
 
 .youtube-controls {
@@ -240,27 +276,33 @@ a {
 
 .input-quiz-option-main {
   border-radius: 8px;
-  border: 2px solid rgb(0, 0, 0);
+  border: 2px solid var(--background);
   width: 40%;
   text-align: center;
   height: 1.5rem;     
   font-size: 15;
+  background-color: white;
+  color: black;
 }
 
 .input-quiz-option-secondary {
   border-radius: 8px;
-  border: 2px solid rgb(0, 0, 0);
+  border: 2px solid var(--background);
   width: 35%;
   text-align: center;
+  background-color: white;
+  color: black;
 }
 
 .input-quiz-option-secondary-two {
   border-radius: 8px;
-  border: 2px solid rgb(0, 0, 0);
+  border: 2px solid var(--background);
   width: 20%;
   text-align: center;
   margin: 0px 10px;
-  height: 1.5rem;        
+  height: 1.5rem;    
+  background-color: white;
+  color: black;    
 }
 
 .main-text {
@@ -372,7 +414,7 @@ a {
   height: 15rem;
   width: 17rem;
   background: #ffffff;
-  border: 1px solid #ddd;
+  border: 2px solid #5e63ff;
   border-radius: 6px;
   font-size: 0.7rem;
   display: flex;
@@ -382,7 +424,12 @@ a {
 
 .quiz-top {
   flex: 1; /* top half */
-  background: #fff; /* or add image */
+  background: #e0dede; /* or add image */
+}
+
+.quiz-top-icon {
+  margin-left: 7rem;
+  margin-top: 2rem;
 }
 
 .quiz-bottom {
@@ -396,6 +443,7 @@ a {
   gap: 0.5rem;
   padding: 0.5rem;
   text-align: center;
+  font-family: Poppins;
 }
 
 .quiz-buttons {
@@ -413,4 +461,42 @@ a {
   height: 100%;
   object-fit: cover;
   border-radius: 6px;
+}
+
+.quizPageTitleText {
+  font-size: 30px;
+  color: var(--accent-clr);
+  font-family: Poppins;
+  font-weight: bold;  
+}
+
+.quizPageQuestionText {
+  font-size: 18px;
+  font-family: Poppins;
+  color: white;
+}
+
+.quizPageOptions {
+  background-color: black;
+  color: white;
+  border-radius: 6px;
+  padding: 10px;
+  border: 2px solid var(--text-clr);
+  font-family: Poppins;
+}
+
+.submitQuizButton {
+  border: 2px solid var(--text-clr);
+  border-radius: 6px;
+  padding: 10px;
+  background-color: var(--accent-clr);
+  color: white;
+  font-family: Poppins;
+}
+
+.score{
+  font-family: Poppins;
+  color: white;
+  font-weight: bold;
+  font-size: 25px;
 }

@@ -185,8 +185,22 @@ export default function CreateQuiz() {
         onChange={(e) => setPdfFiles(Array.from(e.target.files))}
       />
 
+      <div className="centerText">
+        <div className="headerText">
+          StudySpace.AI
+        </div>
+        <div className="secondaryHeaderText">
+          Automatically generate interactive quizzes from Youtube Links, PDFs, 
+         
+        </div>
+        <div className="secondaryHeaderText">
+          or your own notes
+        </div>
+      </div>
+      
+
       <div className="create-bar-container">
-        <h4 className="main-text">Generate a Quiz</h4>
+        <h4 className="main-text">Quiz Generator</h4>
         <select
           onChange={(e) => setQuizType(e.target.value)}
           className="input-quiz-option-main"
@@ -257,8 +271,8 @@ export default function CreateQuiz() {
               onChange={(e) => setYoutubeUrl(e.target.value)}
               className="youtube-Bar"
             />
-            <IoTrashSharp size={35} onClick={deleteYoutubeBar} />
-            <HiCheck size={40} onClick={() => toggleYoutubeDisplay(youtubeUrl)} />
+            <IoTrashSharp size={35} onClick={deleteYoutubeBar} color="grey"/>
+            <HiCheck size={40} onClick={() => toggleYoutubeDisplay(youtubeUrl)} color="grey" />
           </div>
         </div>
         )}
@@ -302,7 +316,9 @@ export default function CreateQuiz() {
         </div>
 
         <div className="search-controls">
-          <GrAdd size={20} onClick={toggleDropdown} />
+          <GrAdd size={20} onClick={toggleDropdown}
+            color="black"
+          />
           {dropdownVisible && (
             <div className="dropdown-menu">
               <div

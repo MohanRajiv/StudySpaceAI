@@ -8,7 +8,6 @@ import { FiBell } from "react-icons/fi";
 export const Navigation = () => {
   const pathname = usePathname();
   const { user } = useUser();
-  const firstName = user.firstName;
 
   return (
     <nav className="centerLinks">
@@ -16,12 +15,6 @@ export const Navigation = () => {
         <SignInButton mode = "modal" />
       </SignedOut>
       <SignedIn>
-        <FiBell 
-          size={25}
-          color="white"
-        />
-        <p>{firstName}</p>
-      
         <UserButton
         appearance={{
           elements: {

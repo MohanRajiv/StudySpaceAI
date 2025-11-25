@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { deleteQuiz, updateQuiz } from "@/actions/quiz.action";
 import Link from "next/link";
+import { FaBook } from "react-icons/fa6";
 
 export default function Quiz({ text, id }) {
     const [showUpdateInput, setShowUpdateInput] = useState(false);
@@ -17,7 +18,11 @@ export default function Quiz({ text, id }) {
         <div className="history-quiz-item">
             {/* Top section: optional image or icon */}
             <div className="quiz-top">
-                {/* You can add an image or icon here */}
+                <div className="quiz-top-icon">
+                    <FaBook 
+                        size={50}
+                    />
+                </div>
             </div>
 
             {/* Bottom section: black background with text and buttons */}
