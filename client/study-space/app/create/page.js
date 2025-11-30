@@ -29,6 +29,8 @@ export default function CreateQuiz() {
     try {
       setLoading(true);
       let extractedText = "";
+      let uploadedVideoUri = null;
+      let uploadedVideoMimeType = null;
 
       if (inputType === "PDF") {
         const files = Array.from(e.target.querySelector('input[type="file"]').files);
@@ -85,6 +87,37 @@ export default function CreateQuiz() {
           throw new Error("No transcript text was returned from the video.");
         }
       }
+      else if (inputType === "MP4") {
+        const files = Array.from(e.target.querySelector('input[type="file"]').files);
+        if (files.length === 0) {
+          alert("Please upload an MP4 video file");
+          return;
+        }
+
+        const file = files[0];
+        if (!file.type.startsWith("video/")) {
+          alert("Please upload a valid video file (MP4)");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await fetch("/api/upload-video", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Failed to upload video");
+        }
+
+        const data = await res.json();
+        uploadedVideoUri = data.fileUri;
+        uploadedVideoMimeType = data.mimeType;
+        extractedText = ""; // Video will be processed by Gemini directly
+      }
       else if (inputType === "Multimodal") {
         let combinedText = "";
         const files = Array.from(e.target.querySelector('input[type="file"]').files);
@@ -96,16 +129,35 @@ export default function CreateQuiz() {
 
         if (files.length != 0) {
           for (const file of files) {
-            const formData = new FormData();
-            formData.append("file", file);
-        
-            const res = await fetch("/api/parse-pdf", {
-              method: "POST",
-              body: formData,
-            });
-        
-            const data = await res.json();
-            combinedText += "\n" + (data.text || "");
+            if (file.type.startsWith("video/")) {
+              const formData = new FormData();
+              formData.append("file", file);
+
+              const res = await fetch("/api/upload-video", {
+                method: "POST",
+                body: formData,
+              });
+
+              if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.error || "Failed to upload video");
+              }
+
+              const data = await res.json();
+              uploadedVideoUri = data.fileUri;
+              uploadedVideoMimeType = data.mimeType;
+            } else {
+              const formData = new FormData();
+              formData.append("file", file);
+          
+              const res = await fetch("/api/parse-pdf", {
+                method: "POST",
+                body: formData,
+              });
+          
+              const data = await res.json();
+              combinedText += "\n" + (data.text || "");
+            }
           }
         }
         if (textValue.trim()) {
@@ -137,14 +189,24 @@ export default function CreateQuiz() {
           text: extractedText,
           numOfQuestions: value,
           quizType: quizType,
+          fileUri: uploadedVideoUri,
+          mimeType: uploadedVideoMimeType
         }),
       });
 
       const quizData = await quizRes.json();
+      
+      if (!quizRes.ok) {
+        throw new Error(quizData.error || "Failed to generate quiz");
+      }
 
       let parsedQuiz;
       try {
-        const cleanedText = quizData.text
+        const textContent = quizData.text || "";
+        if (!textContent) {
+            throw new Error("Empty response from AI");
+        }
+        const cleanedText = textContent
           .replace(/```json/i, "")
           .replace(/```/g, "")
           .trim();
@@ -198,6 +260,7 @@ export default function CreateQuiz() {
           <option value="PDF">PDF</option>
           <option value="Text">Text</option>
           <option value="YouTube">YouTube</option>
+          <option value="MP4">MP4</option>
           <option value="Multimodal">Multimodal</option>
         </select>
 
@@ -214,7 +277,18 @@ export default function CreateQuiz() {
             <input
               type="file"
               className="formInput"
-              multiple accept="application/pdf"
+              multiple accept="application/pdf, video/mp4, video/quicktime"
+              onChange={(e) => setPdfFiles(Array.from(e.target.files))}
+            />
+          </>
+        )}
+
+        {inputType === "MP4" && (
+          <>
+            <input
+              type="file"
+              className="formInput"
+              accept="video/mp4, video/quicktime, video/x-msvideo, video/webm"
               onChange={(e) => setPdfFiles(Array.from(e.target.files))}
             />
           </>
