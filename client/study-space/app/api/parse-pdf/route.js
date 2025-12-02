@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
 import PDFParser from "pdf2json";
 
+function safeDecode(str) {
+  try {
+    return decodeURIComponent(str);
+  } catch {
+    return str;
+  }
+}
+
 export async function POST(req) {
   const formData = await req.formData();
   const file = formData.get("file");
@@ -20,7 +28,7 @@ export async function POST(req) {
       for (const page of pdfData.Pages || []) {
         for (const textItem of page.Texts || []) {
           for (const run of textItem.R || []) {
-            if (run.T) extracted += decodeURIComponent(run.T) + " ";
+            if (run.T) extracted += safeDecode(run.T) + " ";
           }
         }
       }

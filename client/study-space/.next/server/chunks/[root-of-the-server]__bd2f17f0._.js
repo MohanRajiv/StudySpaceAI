@@ -63,10 +63,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$serv
 ;
 async function POST(req) {
     try {
-        const { text, numOfQuestions, quizType, questionType } = await req.json();
-        if (!text || !numOfQuestions) {
+        const { text, numOfQuestions, quizType, questionType, fileUri, mimeType } = await req.json();
+        if (!text || !numOfQuestions || !fileUri) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: "No text or number input provided"
+                error: "No text or video input provided"
             }, {
                 status: 400
             });
@@ -203,7 +203,27 @@ async function POST(req) {
     Question Type:
     ${questionType}
     `;
-        const result = await model.generateContent(prompt);
+        const videoPart = fileUri ? {
+            fileData: {
+                fileUri: fileUri,
+                mimeType: mimeType
+            }
+        } : null;
+        const result = await model.generateContent({
+            contents: [
+                {
+                    role: "user",
+                    parts: [
+                        ...videoPart ? [
+                            videoPart
+                        ] : [],
+                        {
+                            text: prompt
+                        }
+                    ]
+                }
+            ]
+        });
         const output = result.response.text();
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             text: output

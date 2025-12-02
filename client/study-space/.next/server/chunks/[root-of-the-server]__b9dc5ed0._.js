@@ -103,6 +103,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$serv
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$pdf2json$2f$dist$2f$pdfparser$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/pdf2json/dist/pdfparser.js [app-route] (ecmascript)");
 ;
 ;
+function safeDecode(str) {
+    try {
+        return decodeURIComponent(str);
+    } catch  {
+        return str;
+    }
+}
 async function POST(req) {
     const formData = await req.formData();
     const file = formData.get("file");
@@ -122,7 +129,7 @@ async function POST(req) {
             for (const page of pdfData.Pages || []){
                 for (const textItem of page.Texts || []){
                     for (const run of textItem.R || []){
-                        if (run.T) extracted += decodeURIComponent(run.T) + " ";
+                        if (run.T) extracted += safeDecode(run.T) + " ";
                     }
                 }
             }

@@ -27,6 +27,17 @@ export async function getQuizzes() {
     }
 }
 
+export async function getRecentQuiz(){
+    try {
+        const db = await connectToDB();
+        const { userId } = await auth();
+        const mostRecentQuiz = await QuizModel.find({ clerkId: userId }).sort({ createdAt: -1 }).lean();
+        return mostRecentQuiz;
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 export async function createQuiz(quizData) {
     const { userId } = await auth();
   

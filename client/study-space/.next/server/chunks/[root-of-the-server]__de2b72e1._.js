@@ -99,6 +99,8 @@ const quizSchema = new __TURBOPACK__imported__module__$5b$externals$5d2f$mongoos
     quizType: {
         type: String
     }
+}, {
+    timestamps: true
 });
 const QuizModel = __TURBOPACK__imported__module__$5b$externals$5d2f$mongoose__$5b$external$5d$__$28$mongoose$2c$__cjs$29$__["models"].QuizModel || (0, __TURBOPACK__imported__module__$5b$externals$5d2f$mongoose__$5b$external$5d$__$28$mongoose$2c$__cjs$29$__["model"])("QuizModel", quizSchema);
 const __TURBOPACK__default__export__ = QuizModel;

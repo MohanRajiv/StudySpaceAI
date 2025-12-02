@@ -79,6 +79,8 @@ const quizSchema = new __TURBOPACK__imported__module__$5b$externals$5d2f$mongoos
     quizType: {
         type: String
     }
+}, {
+    timestamps: true
 });
 const QuizModel = __TURBOPACK__imported__module__$5b$externals$5d2f$mongoose__$5b$external$5d$__$28$mongoose$2c$__cjs$29$__["models"].QuizModel || (0, __TURBOPACK__imported__module__$5b$externals$5d2f$mongoose__$5b$external$5d$__$28$mongoose$2c$__cjs$29$__["model"])("QuizModel", quizSchema);
 const __TURBOPACK__default__export__ = QuizModel;
@@ -92,13 +94,15 @@ module.exports = mod;
 "[project]/actions/quiz.action.js [app-rsc] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-/* __next_internal_action_entry_do_not_use__ [{"000d0bf8d680d682af33478d5593db3ed3548e14b5":"getQuizzes","40c68334b32e4f81d5e097494b9c905b4222dd6b78":"deleteQuiz","40d9eb166d2a161f9cf441e894b61653cc583011e9":"createQuiz","606c1ad7f65505992ac55d8b0fd03c94f5ce960a82":"updateQuiz"},"",""] */ __turbopack_context__.s([
+/* __next_internal_action_entry_do_not_use__ [{"000711136e7541251e49d3d32f31c1a0af9e12a135":"getRecentQuiz","000d0bf8d680d682af33478d5593db3ed3548e14b5":"getQuizzes","40c68334b32e4f81d5e097494b9c905b4222dd6b78":"deleteQuiz","40d9eb166d2a161f9cf441e894b61653cc583011e9":"createQuiz","606c1ad7f65505992ac55d8b0fd03c94f5ce960a82":"updateQuiz"},"",""] */ __turbopack_context__.s([
     "createQuiz",
     ()=>createQuiz,
     "deleteQuiz",
     ()=>deleteQuiz,
     "getQuizzes",
     ()=>getQuizzes,
+    "getRecentQuiz",
+    ()=>getRecentQuiz,
     "updateQuiz",
     ()=>updateQuiz
 ]);
@@ -131,6 +135,20 @@ async function getQuizzes() {
                 _id: quiz._id.toString()
             }));
         return cleanQuizzes;
+    } catch (e) {
+        console.log(e);
+    }
+}
+async function getRecentQuiz() {
+    try {
+        const db = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$database$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["connectToDB"])();
+        const { userId } = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$clerk$2f$nextjs$2f$dist$2f$esm$2f$app$2d$router$2f$server$2f$auth$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["auth"])();
+        const mostRecentQuiz = await __TURBOPACK__imported__module__$5b$project$5d2f$modals$2f$quiz$2e$modal$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].find({
+            clerkId: userId
+        }).sort({
+            createdAt: -1
+        }).lean();
+        return mostRecentQuiz;
     } catch (e) {
         console.log(e);
     }
@@ -171,11 +189,13 @@ async function updateQuiz(id, newText) {
 ;
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ensureServerEntryExports"])([
     getQuizzes,
+    getRecentQuiz,
     createQuiz,
     deleteQuiz,
     updateQuiz
 ]);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getQuizzes, "000d0bf8d680d682af33478d5593db3ed3548e14b5", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getRecentQuiz, "000711136e7541251e49d3d32f31c1a0af9e12a135", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(createQuiz, "40d9eb166d2a161f9cf441e894b61653cc583011e9", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(deleteQuiz, "40c68334b32e4f81d5e097494b9c905b4222dd6b78", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(updateQuiz, "606c1ad7f65505992ac55d8b0fd03c94f5ce960a82", null);
@@ -207,6 +227,8 @@ const flashcardSchema = new __TURBOPACK__imported__module__$5b$externals$5d2f$mo
     quizType: {
         type: String
     }
+}, {
+    timestamps: true
 });
 const FlashcardModel = __TURBOPACK__imported__module__$5b$externals$5d2f$mongoose__$5b$external$5d$__$28$mongoose$2c$__cjs$29$__["models"].FlashcardModel || (0, __TURBOPACK__imported__module__$5b$externals$5d2f$mongoose__$5b$external$5d$__$28$mongoose$2c$__cjs$29$__["model"])("FlashcardModel", flashcardSchema);
 const __TURBOPACK__default__export__ = FlashcardModel;

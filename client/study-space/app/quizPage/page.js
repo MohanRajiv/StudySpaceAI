@@ -126,7 +126,7 @@ export default function QuizPage() {
               </ul>
 
               {submitted && (
-                <p style={{ fontWeight: "bold", marginTop: "5px" }}>
+                <p className="quizPageQuestionText">
                   Explanation: {q.explanation}
                 </p>
               )}

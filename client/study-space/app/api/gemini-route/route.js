@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { text, numOfQuestions, quizType, questionType } = await req.json(); 
+    const { text, numOfQuestions, quizType, questionType} = await req.json(); 
 
-    if (!text || !numOfQuestions) {
-      return NextResponse.json({ error: "No text or number input provided" }, { status: 400 });
+    if (!text || !numOfQuestions || !fileUri) {
+      return NextResponse.json({ error: "No text or video input provided" }, { status: 400 });
     }
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);

@@ -3,7 +3,7 @@
 
 :root {
   --background: #b3b0b0;
-  --backgroundTest: #42434a;
+  --backgroundTest: #222121;
   --foreground: #171717;
   --base-clr: #11121a;
   --line-clr: #42434a;
@@ -61,7 +61,7 @@ a {
 
 .centerText {
   margin-left: -5rem;
-  margin-top: 2.5rem;
+  margin-top: 5rem;
   display: flex;
   flex-direction: column;   
   align-items: center;      
@@ -118,7 +118,7 @@ a {
 .create-bar-container {
   position: absolute;
   margin-left: 14rem;
-  top: 230px;
+  top: 260px;
   width: 50%;
   border: 2px solid var(--text-clr);
   border-radius: 15px;
@@ -139,7 +139,7 @@ a {
   width: 100%;
   padding: 6px 18px;
   background: white;
-  border: 2px solid black;
+  border: 2px solid var(--background);
   border-radius: 20px;
   display: flex;
   flex-direction: column; 
@@ -197,9 +197,9 @@ a {
   left: 0%;
   margin: auto;
   width: 45%;
-  border: 2px solid rgb(0, 0, 0);  border-radius: 20px;
+  border: 2px solid rgb(255, 255, 255);  border-radius: 20px;
   padding: 5px 20px;
-  background-color: white;
+  background-color: var(--base-clr);
   flex-direction: column;
   transition: height 0.3s ease;
   position: relative;
@@ -222,6 +222,7 @@ a {
   padding: 6px;
   outline: none;
   font-size: 1rem;
+  background-color: white;
 }
 
 /*PDF File Display under Search Bar*/

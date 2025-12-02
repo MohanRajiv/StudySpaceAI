@@ -451,6 +451,10 @@
     margin-bottom: calc(var(--spacing) * 2);
   }
 
+  .contents {
+    display: contents;
+  }
+
   .flex {
     display: flex;
   }
@@ -779,7 +783,7 @@
 
 :root {
   --background: #b3b0b0;
-  --backgroundTest: #42434a;
+  --backgroundTest: #222121;
   --foreground: #171717;
   --base-clr: #11121a;
   --line-clr: #42434a;
@@ -832,7 +836,7 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 2.5rem;
+  margin-top: 5rem;
   margin-left: -5rem;
   font-family: Poppins;
   display: flex;
@@ -899,13 +903,13 @@ a {
   font-family: Poppins;
   display: flex;
   position: absolute;
-  top: 230px;
+  top: 260px;
 }
 
 .search-bar-container {
+  border: 2px solid var(--background);
   box-sizing: border-box;
   background: #fff;
-  border: 2px solid #000;
   border-radius: 20px;
   flex-direction: column;
   align-items: flex-start;
@@ -959,9 +963,9 @@ a {
 }
 
 .youtube-bar-container {
+  background-color: var(--base-clr);
   color: #000;
-  background-color: #fff;
-  border: 2px solid #000;
+  border: 2px solid #fff;
   border-radius: 20px;
   flex-direction: column;
   width: 100%;
@@ -980,6 +984,7 @@ a {
 }
 
 .youtube-controls input {
+  background-color: #fff;
   border: 2px solid #000;
   outline: none;
   flex: 1;

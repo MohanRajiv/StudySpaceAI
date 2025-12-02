@@ -6,7 +6,7 @@ const flashcardSchema = new Schema({
   questions: [String],
   answers: [String],
   quizType: {type: String},
-});
+}, { timestamps: true });
 
 const FlashcardModel = models.FlashcardModel || model("FlashcardModel", flashcardSchema);
 

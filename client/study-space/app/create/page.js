@@ -24,6 +24,7 @@ export default function CreateQuiz() {
   const [YoutubeBarVisible, setYoutubeBarVisible] = useState(false);
   const [YoutubeVideoDisplay, setYoutubeVideoDisplay] = useState(false);
   const pdfPickerRef = useRef(null);
+  const mp4PickerRef = useRef(null);
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -87,7 +88,8 @@ export default function CreateQuiz() {
 
     try {
         setLoading(true);
-
+        let uploadedVideoUri = null;
+        let uploadedVideoMimeType = null;
         let combinedText = "";
         const files = pdfFiles;
 
@@ -99,16 +101,35 @@ export default function CreateQuiz() {
 
         if (files.length !== 0) {
           for (const file of files) {
-            const formData = new FormData();
-            formData.append("file", file);
+            if (file.type.startsWith("video/")) {
+              const formData = new FormData();
+              formData.append("file", file);
 
-            const res = await fetch("/api/parse-pdf", {
-              method: "POST",
-              body: formData,
-            });
+              const res = await fetch("/api/mp4-route", {
+                method: "POST",
+                body: formData,
+              });
 
-            const data = await res.json();
-            combinedText += "\n" + (data.text || "");
+              if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.error || "Failed to upload video");
+              }
+
+              const data = await res.json();
+              uploadedVideoUri = data.fileUri;
+              uploadedVideoMimeType = data.mimeType;
+            } else {
+              const formData = new FormData();
+              formData.append("file", file);
+          
+              const res = await fetch("/api/parse-pdf", {
+                method: "POST",
+                body: formData,
+              });
+          
+              const data = await res.json();
+              combinedText += "\n" + (data.text || "");
+            }
           }
         }
 
@@ -147,11 +168,11 @@ export default function CreateQuiz() {
 
       let parsedQuiz;
       try {
-        const cleanedText = quizData.text
-          .replace(/```json/i, "")
-          .replace(/```/g, "")
-          .trim();
-
+        const textContent = quizData.text || "";
+        if (!textContent) {
+            throw new Error("Empty response from AI");
+        }
+        const cleanedText = textContent.replace(/```json/i, "").replace(/```/g, "").trim();
         parsedQuiz = JSON.parse(cleanedText);
       } catch (error) {
         console.error("Error parsing quizData.text:", error);
@@ -185,6 +206,15 @@ export default function CreateQuiz() {
         onChange={(e) => setPdfFiles(Array.from(e.target.files))}
       />
 
+      <input
+        type="file"
+        accept="video/mp4, video/quicktime, video/x-msvideo, video/webm"
+        ref={mp4PickerRef}
+        style={{ display: "none" }}
+        multiple
+        onChange={(e) => setPdfFiles(Array.from(e.target.files))}
+      />
+
       <div className="centerText">
         <div className="headerText">
           StudySpace.AI
@@ -200,7 +230,6 @@ export default function CreateQuiz() {
       
 
       <div className="create-bar-container">
-        <h4 className="main-text">Quiz Generator</h4>
         <select
           onChange={(e) => setQuizType(e.target.value)}
           className="input-quiz-option-main"
@@ -329,6 +358,14 @@ export default function CreateQuiz() {
                 }}
               >
                 Add PDF File
+              </div>
+              <div className="dropdown-item"
+                onClick={() => {
+                  mp4PickerRef.current?.click();
+                  setDropdownVisible(false);
+                }}
+              >
+                Add MP4 File
               </div>
               <div className="dropdown-item" onClick={toggleYoutubeBar}>
                 Add Youtube Video

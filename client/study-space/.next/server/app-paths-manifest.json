@@ -1,5 +1,8 @@
 {
+  "/api/gemini-route/route": "app/api/gemini-route/route.js",
+  "/api/mp4-route/route": "app/api/mp4-route/route.js",
   "/api/users/route": "app/api/users/route.js",
   "/create/page": "app/create/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js"
 }
