@@ -3263,6 +3263,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$flashcard$2e$acti
 ;
 ;
 ;
+;
 }),
 "[project]/.next-internal/server/app/history/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@clerk/nextjs/dist/esm/server/keyless-custom-headers.js [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/server-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE3 => \"[project]/actions/quiz.action.js [app-rsc] (ecmascript)\", ACTIONS_MODULE4 => \"[project]/actions/flashcard.action.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)", ((__turbopack_context__) => {
 "use strict";
@@ -3272,6 +3273,8 @@ __turbopack_context__.s([
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$quiz$2e$action$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getRecentQuiz"],
     "000d0bf8d680d682af33478d5593db3ed3548e14b5",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$quiz$2e$action$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getQuizzes"],
+    "0045f48218f1986b4f4096dc91298481e5a983bcb7",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$flashcard$2e$action$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getRecentFlashcard"],
     "006c4356beaf18ac64a8a3763da3ad380388c75671",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$flashcard$2e$action$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getFlashcards"],
     "409957ddabc9ae4c01bd1727c88751e634308b4eb7",

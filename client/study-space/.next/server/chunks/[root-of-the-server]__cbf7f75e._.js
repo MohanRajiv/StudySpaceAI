@@ -83,6 +83,8 @@ const flashcardSchema = new __TURBOPACK__imported__module__$5b$externals$5d2f$mo
     quizType: {
         type: String
     }
+}, {
+    timestamps: true
 });
 const FlashcardModel = __TURBOPACK__imported__module__$5b$externals$5d2f$mongoose__$5b$external$5d$__$28$mongoose$2c$__cjs$29$__["models"].FlashcardModel || (0, __TURBOPACK__imported__module__$5b$externals$5d2f$mongoose__$5b$external$5d$__$28$mongoose$2c$__cjs$29$__["model"])("FlashcardModel", flashcardSchema);
 const __TURBOPACK__default__export__ = FlashcardModel;

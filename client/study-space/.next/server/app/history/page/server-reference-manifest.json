@@ -180,6 +180,21 @@
       "exportedName": "updateQuiz",
       "filename": "actions/quiz.action.js"
     },
+    "0045f48218f1986b4f4096dc91298481e5a983bcb7": {
+      "workers": {
+        "app/history/page": {
+          "moduleId": "[project]/.next-internal/server/app/history/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@clerk/nextjs/dist/esm/server/keyless-custom-headers.js [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/server-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE3 => \"[project]/actions/quiz.action.js [app-rsc] (ecmascript)\", ACTIONS_MODULE4 => \"[project]/actions/flashcard.action.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "getRecentFlashcard",
+          "filename": "actions/flashcard.action.js"
+        }
+      },
+      "layer": {
+        "app/history/page": "rsc"
+      },
+      "exportedName": "getRecentFlashcard",
+      "filename": "actions/flashcard.action.js"
+    },
     "006c4356beaf18ac64a8a3763da3ad380388c75671": {
       "workers": {
         "app/history/page": {

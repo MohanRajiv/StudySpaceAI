@@ -1,8 +1,6 @@
 'use server';
 import { connectToDB } from "@/database";
-import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
-import QuizModel from "@/modals/quiz.modal";
 import { auth } from "@clerk/nextjs/server"; 
 import { ObjectId } from "mongodb";
 import FlashcardModel from "@/modals/flashcard.modal";
@@ -23,6 +21,17 @@ export async function getFlashcards() {
         }));
         
         return cleanFlashcards;
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+export async function getRecentFlashcard(){
+    try {
+        const db = await connectToDB();
+        const { userId } = await auth();
+        const mostRecentQuiz = await FlashcardModel.findOne({ clerkId: userId }).sort({ createdAt: -1 }).lean();
+        return mostRecentQuiz;
     } catch (e) {
         console.log(e);
     }

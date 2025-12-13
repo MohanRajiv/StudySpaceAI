@@ -56,8 +56,8 @@ export default function FlashcardPage() {
 
     return (
         <div>
-            <h1>{flashcard.flashcardTitle}</h1>
-            <div className="formInput" onClick={handleShowAnswer}>
+            <h1 className="quizPageTextMain">{flashcard.flashcardTitle}</h1>
+            <div className="quizPageQuestionText" onClick={handleShowAnswer}>
                 <div className="quizHover">
                 {!showAnswer && (
                     <p>{flashcard.questions[index]}</p>

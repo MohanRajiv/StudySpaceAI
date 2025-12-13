@@ -88,42 +88,70 @@ export default function QuizPage() {
             <li key={i} style={{ marginBottom: "20px" }}>
               <p className="quizPageQuestionText">{i + 1}. {q.question}</p>
 
-              <ul className="quizPageOptions">
-                {q.options.map((opt, optIndex) => {
-                  const isSelected = selected.includes(optIndex);
-                  const isCorrect = submitted && q.answerIndexes.includes(optIndex);
-                  const isWrong = submitted && isSelected && !isCorrect;
+             
+                {q.questionType === "Dropdown" && (
+                   <div className="quizPageOptions">
+                  <select
+                    onChange={(e) => handleSingleSelect(i, Number(e.target.value))}
+                    className="input-quiz-option-main"
+                    value={answers[i]?.[0] ?? ""}
+                  >
+                    <option value="" disabled>Select an answer</option>
+                      {q.options.map((opt, idx) => (
+                        <option key={idx} value={idx}>
+                          {opt}
+                        </option>
+                      ))}
+                  </select>
+                  {submitted && (
+                  <div>
+                    Correct Answer: {q.options[q.answerIndexes[0]]}
+                  </div>
+                )}
+                  </div>
 
-                  const handleClick =
-                    q.questionType === "Multiple Answer"
-                      ? () => handleMultipleToggle(i, optIndex)
-                      : () => handleSingleSelect(i, optIndex);
+                )}
+                
+              
+              {q.questionType !== "Dropdown" && ( 
+                <ul className="quizPageOptions">
+                  {q.options.map((opt, optIndex) => {
+                    const isSelected = selected.includes(optIndex);
+                    const isCorrect = submitted && q.answerIndexes.includes(optIndex);
+                    const isWrong = submitted && isSelected && !isCorrect;
 
-                  return (
-                    <li
-                      key={optIndex}
-                      onClick={handleClick}
-                      style={{
-                        cursor: submitted ? "default" : "pointer",
-                        fontWeight: isSelected ? "bold" : "normal",
-                        color: isCorrect ? "green" : isWrong ? "red" : "white",
-                        display: "flex",
-                        alignItems: "center"
-                      }}
-                    >
-                      {q.questionType === "Multiple Answer" && (
-                        <input
-                          type="checkbox"
-                          checked={isSelected}
-                          readOnly
-                          style={{ marginRight: "8px" }}
-                        />
-                      )}
-                      {opt}
-                    </li>
-                  );
-                })}
-              </ul>
+                    const handleClick =
+                      q.questionType === "Multiple Answer"
+                        ? () => handleMultipleToggle(i, optIndex)
+                        : () => handleSingleSelect(i, optIndex);
+
+                    return (
+                      <li
+                        key={optIndex}
+                        onClick={handleClick}
+                        style={{
+                          cursor: submitted ? "default" : "pointer",
+                          fontWeight: isSelected ? "bold" : "normal",
+                          color: isCorrect ? "green" : isWrong ? "red" : "white",
+                          display: "flex",
+                          alignItems: "center"
+                        }}
+                      >
+                        {q.questionType === "Multiple Answer" && (
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            readOnly
+                            style={{ marginRight: "8px" }}
+                          />
+                        )}
+
+                        {opt}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
 
               {submitted && (
                 <p className="quizPageQuestionText">
@@ -134,7 +162,6 @@ export default function QuizPage() {
           );
         })}
       </ul>
-
       {!submitted && <button className="submitQuizButton" onClick={handleSubmit}>Submit Quiz</button>}
     </div>
   );

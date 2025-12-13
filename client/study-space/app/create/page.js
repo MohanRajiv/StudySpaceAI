@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import { createQuiz } from "@/actions/quiz.action";
 import { createFlashcard } from "@/actions/flashcard.action";
-
+import Quiz from "../components/quiz";
 // Icons
 import { BsArrowUpCircleFill } from "react-icons/bs";
 import { SiYoutube } from "react-icons/si";
@@ -10,25 +10,113 @@ import { IoTrashSharp } from "react-icons/io5";
 import { GrAdd } from "react-icons/gr";
 import {FaTimes } from "react-icons/fa";
 import { HiCheck } from "react-icons/hi";
+import Flashcard from "../components/flashcard";
 
 export default function CreateQuiz() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [number, setNumber] = useState("");
+  const [numberCounts, setNumberCounts] = useState([]);
   const [textValue, setTextValue] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [youtubeUrls, setYoutubeUrls] = useState([]);
   const [quizType, setQuizType] = useState("");
+  const [numberType, setNumberType] = useState("");
   const [questionType, setQuestionType] = useState("");
   const [pdfFiles, setPdfFiles] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [YoutubeBarVisible, setYoutubeBarVisible] = useState(false);
   const [YoutubeVideoDisplay, setYoutubeVideoDisplay] = useState(false);
+  const [recentQuiz, setRecentQuiz] = useState(null);
+  const [recentFlashcard, setRecentFlashcard] = useState(null);
+  const [questionTypes, setQuestionTypes] = useState([]);
   const pdfPickerRef = useRef(null);
-  const mp4PickerRef = useRef(null);
+
+  const fetchRecentQuiz = async () => {
+    try {
+      const res = await fetch("/api/get-recent-quiz");
+      const data = await res.json();
+      console.log("Recent Quiz (API Response):", data);
+      setRecentQuiz(data);
+      setPdfFiles([]);
+      setYoutubeUrls([]);
+      setTextValue([]);
+      setQuizType("");
+    } catch (err) {
+      console.error("Error fetching recent quiz:", err);
+    }
+  };
+
+  const fetchRecentFlashcard = async () => {
+    try {
+      const res = await fetch("/api/get-recent-flashcard");
+      const data = await res.json();
+      console.log("Recent Flashcard (API Response):", data);
+      setRecentFlashcard(data);
+      setPdfFiles([]);
+      setYoutubeUrls([]);
+      setTextValue([]);
+      setQuizType("");
+    } catch (err) {
+      console.error("Error fetching recent quiz:", err);
+    }
+  };
+
+  const toggleQuestionType = (type) => {
+    setQuestionTypes(prev => {
+      if (prev.includes(type)) {
+        if (numberType == "Multiple Number"){
+          const index = prev.indexOf(type);
+          setNumberCounts(nums => nums.filter((_, i) => i !== index));
+        }
+        return prev.filter(t => t !== type);
+      } else {
+        if (numberType == "Multiple Number"){
+          setNumberCounts(nums => [...nums, ""]);
+        }
+        if (numberType == "Single Number"){
+          setNumberCounts([""]);
+        }
+        return [...prev, type];
+      }
+    });
+  };
+
+  const setNumberCount = (index, value) => {
+    if (numberType == "Single Number"){
+      setNumberCounts([value]);
+    }
+    if (numberType == "Multiple Number"){
+      setNumberCounts(prev => {
+        const updated = [...prev];
+        updated[index] = value;
+        return updated;
+      });
+    }
+  }
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
+
+  const addYoutubeUrl = () => {
+    const url = youtubeUrl.trim();
+    if (!url) {
+      alert("Please enter a YouTube URL.");
+      return;
+    }
+  
+    if (youtubeUrls.includes(url)) {
+      alert("This YouTube link was already added.");
+      return;
+    }
+  
+    setYoutubeUrls((prev) => [...prev, url]);
+  
+    toggleYoutubeDisplay(url);
+  
+    setYoutubeUrl("");
+  };  
 
   const toggleYoutubeBar = () => {
     if (!YoutubeBarVisible) {
@@ -42,11 +130,6 @@ export default function CreateQuiz() {
   const deleteYoutubeBar = () => {
     setYoutubeUrl("");
     setYoutubeBarVisible(false);
-  };
-
-  const deleteYoutubeVideoDisplay = () => {
-    setYoutubeUrl("");
-    setYoutubeVideoDisplay(false);
   };
 
   const toggleYoutubeDisplay = (value) => {
@@ -76,24 +159,22 @@ export default function CreateQuiz() {
       return;
     }
 
-    if (!questionType) {
+    if (questionTypes.length == 0) {
       alert("Please select an question type to generate a quiz.");
       return;
     }
 
-    if (!number) {
+    if (numberCounts.length == 0) {
       alert("Please select a number of questions/flashcards to generate a quiz.");
       return;
     }
 
     try {
         setLoading(true);
-        let uploadedVideoUri = null;
-        let uploadedVideoMimeType = null;
         let combinedText = "";
         const files = pdfFiles;
 
-        if (files.length === 0 && !textValue.trim() && !youtubeUrl.trim()) {
+        if (files.length === 0 && !textValue.trim() && youtubeUrls.length == 0) {
           alert("Please enter an input.");
           setLoading(false);
           return;
@@ -137,30 +218,34 @@ export default function CreateQuiz() {
           combinedText += "\n" + textValue;
         }
 
-        if (youtubeUrl.trim()) {
-          const res = await fetch("/api/youtube-route", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url: youtubeUrl.trim() }),
-          });
+        if (youtubeUrls.length != 0){
+          for (const url of youtubeUrls){
+            if (url.trim()){
+              const res = await fetch("/api/youtube-route", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url: url.trim() }),
+              });
 
-          if (!res.ok) {
-            const errorData = await res.json();
-            throw new Error(errorData.error || "Failed to fetch YouTube transcript");
+              if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.error || "Failed to fetch YouTube transcript");
+              }
+
+              const data = await res.json();
+              combinedText += "\n" + (data.text || "");
+            }
           }
-
-          const data = await res.json();
-          combinedText += "\n" + (data.text || "");
         }
-
+        
       const quizRes = await fetch("/api/gemini-route", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           text: combinedText.trim(),
-          numOfQuestions: number,
+          numOfQuestions: numberCounts,
           quizType: quizType,
-          questionType: questionType,
+          questionTypes: questionTypes,
         }),
       });
 
@@ -187,6 +272,12 @@ export default function CreateQuiz() {
         setText(parsedQuiz.quizTitle || "");
         await createQuiz(parsedQuiz);
       }
+
+      if (quizType === "Flashcard"){
+        await fetchRecentFlashcard();
+      } else {
+        await fetchRecentQuiz();
+      }
     } catch (error) {
       console.error(error);
       alert("An error occurred while generating the quiz.");
@@ -203,16 +294,25 @@ export default function CreateQuiz() {
         ref={pdfPickerRef}
         style={{ display: "none" }}
         multiple
-        onChange={(e) => setPdfFiles(Array.from(e.target.files))}
-      />
-
-      <input
-        type="file"
-        accept="video/mp4, video/quicktime, video/x-msvideo, video/webm"
-        ref={mp4PickerRef}
-        style={{ display: "none" }}
-        multiple
-        onChange={(e) => setPdfFiles(Array.from(e.target.files))}
+        onChange={(e) => {
+          const selected = Array.from(e.target.files);
+          const uniqueSelected = selected.filter(
+            (file) =>
+              !pdfFiles.some(
+                (existing) =>
+                  existing.name === file.name && existing.size === file.size
+              )
+          );
+        
+          if (uniqueSelected.length === 0) {
+            alert("These files were already added.");
+            e.target.value = "";
+            return;
+          }
+        
+          setPdfFiles((prev) => [...prev, ...uniqueSelected]);
+          e.target.value = "";
+        }}
       />
 
       <div className="centerText">
@@ -241,50 +341,139 @@ export default function CreateQuiz() {
         </select>
 
         {quizType == "Quiz" && (
-          <div>
-          <select
-            className="input-quiz-option-secondary"
-            onChange={(e)=> setQuestionType(e.target.value)}
-            value={questionType}
-          >
-            <option value="">-- Select a question type --</option>
-            <option value="Multiple Choice">Multiple Choice</option>
-            <option value="True or False">True or False</option>
-            <option value="Multiple Answer">Multiple Answer</option>
-            <option value="Mixed Format">Mixed Format</option>
-          </select>
-
-          <input
-            type="number"
-            className="input-quiz-option-secondary-two"
-            placeholder="# of questions"
-            onChange={(e)=> setNumber(e.target.value)}
-            value={number}
-          />
+          <div className="checkbox-container">
+            <button className="select-all"
+              onClick={()=>setQuestionTypes(["Multiple Choice", "True or False", "Multiple Answer", "Dropdown"])}
+            >
+              Select All
+            </button>
+            <label>
+              <input
+                type="checkbox"
+                checked={questionTypes.includes("Multiple Choice")}
+                onChange={() => toggleQuestionType("Multiple Choice")}
+              />
+              Multiple Choice
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={questionTypes.includes("True or False")}
+                onChange={() => toggleQuestionType("True or False")}
+              />
+              True or False
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={questionTypes.includes("Multiple Answer")}
+                onChange={() => toggleQuestionType("Multiple Answer")}
+              />
+              Multiple Answer
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={questionTypes.includes("Dropdown")}
+                onChange={() => toggleQuestionType("Dropdown")}
+              />
+              Dropdown
+            </label>
+            <select
+              onChange={(e) => setNumberType(e.target.value)}
+              className="input-quiz-option-secondary-two"
+              value={numberType}
+            >
+              <option value="">- Number type -</option>
+              <option value="Single Number">Single Number</option>
+              <option value="Multiple Number">Multiple Number</option>
+            </select>
           </div>
         )}
 
         {quizType == "Flashcard" && (
-          <div>
-          <select
-            className="input-quiz-option-secondary"
-            onChange={(e)=> setQuestionType(e.target.value)}
-            value={questionType}
-          >
-            <option value="">-- Select a Flashcard type --</option>
-            <option value="Definitions">Definitions</option>
-            <option value="Questions">Questions</option>
-            <option value="Random Flashcards">Random Flashcards</option>
-          </select>
+          <div className="checkbox-container">
+            <button className="select-all"
+              onClick={()=>setQuestionTypes(["Definitions", "Questions"])}
+            >
+              Select All
+            </button>
+            <label>
+              <input
+                type="checkbox"
+                checked={questionTypes.includes("Definitions")}
+                onChange={() => toggleQuestionType("Definitions")}
+              />
+              Definitions
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={questionTypes.includes("Questions")}
+                onChange={() => toggleQuestionType("Questions")}
+              />
+              Questions
+            </label>
+            <select
+              onChange={(e) => setNumberType(e.target.value)}
+              className="input-quiz-option-secondary-two"
+              value={numberType}
+            >
+              <option value="">- Number type -</option>
+              <option value="Single Number">Single Number</option>
+              <option value="Multiple Number">Multiple Number</option>
+            </select>
+          </div>
+        )}
 
+        {quizType == "Quiz" && numberType=="Single Number" && (
+          <input
+            type="number"
+            className="input-quiz-option-secondary-two"
+            placeholder="# of questions"
+            onChange={(e)=> setNumberCount(0, e.target.value)}
+            value={numberCounts[0] ?? ""}
+          />
+        )}
+
+        {quizType == "Quiz" && numberType=="Multiple Number" && questionTypes.length > 0 && (
+          questionTypes.map((type, index) => (
+            <div key={type}>
+              <label>{type}</label>
+              <input
+                type="number"
+                className="input-quiz-option-secondary-two"
+                placeholder="# of questions"
+                onChange={(e)=> setNumberCount(index, e.target.value)}
+                value={numberCounts[index] ?? ""}
+              />
+            </div>
+          ))
+        )}
+
+        {quizType == "Flashcard" && numberType=="Single Number" && (
           <input
             type="number"
             className="input-quiz-option-secondary-two"
             placeholder="# of flashcards"
-            onChange={(e)=> setNumber(e.target.value)}
-            value={number}
+            onChange={(e)=> setNumberCount(0, e.target.value)}
+            value={numberCounts[0] ?? ""}
           />
-          </div>
+        )}
+
+        {quizType == "Flashcard" && numberType=="Multiple Number" && questionTypes.length > 0 && (
+          questionTypes.map((type, index) => (
+            <div key={type}>
+              <label>{type}</label>
+              <input
+                type="number"
+                className="input-quiz-option-secondary-two"
+                placeholder="# of flashcards"
+                onChange={(e)=> setNumberCount(index, e.target.value)}
+                value={numberCounts[index] ?? ""}
+              />
+            </div>
+          ))
         )}
 
         {YoutubeBarVisible && (
@@ -297,11 +486,13 @@ export default function CreateQuiz() {
               type="text" 
               placeholder="Enter your YouTube URL here" 
               value={youtubeUrl}
-              onChange={(e) => setYoutubeUrl(e.target.value)}
+              onChange={
+                (e) => setYoutubeUrl(e.target.value)
+              }
               className="youtube-Bar"
             />
             <IoTrashSharp size={35} onClick={deleteYoutubeBar} color="grey"/>
-            <HiCheck size={40} onClick={() => toggleYoutubeDisplay(youtubeUrl)} color="grey" />
+            <HiCheck size={40} onClick={addYoutubeUrl} color="grey" />
           </div>
         </div>
         )}
@@ -322,26 +513,23 @@ export default function CreateQuiz() {
             ))
           )}
 
-          {YoutubeVideoDisplay && (
-          <div className="pdf-file-item youtube-thumb">
-            {extractYouTubeId(youtubeUrl) ? (
+          {youtubeUrls.map((url, i) => (
+            <div key={i} className="pdf-file-item youtube-thumb">
             <img
-              src={`https://img.youtube.com/vi/${extractYouTubeId(youtubeUrl)}/0.jpg`}
-              alt="YouTube Thumbnail"
+              src={`https://img.youtube.com/vi/${extractYouTubeId(url)}/0.jpg`}
               className="youtube-thumbnail"
             />
-            ) : (
-              "Invalid YouTube Link"
-            )}
             <button
               type="button"
               className="clear-pdf-btn"
-              onClick={deleteYoutubeVideoDisplay}
+              onClick={() =>
+              setYoutubeUrls((prev) => prev.filter((_, index) => index !== i))
+              }
             >
               <FaTimes />
             </button>
-          </div>
-          )}
+            </div>
+          ))}
         </div>
 
         <div className="search-controls">
@@ -361,7 +549,6 @@ export default function CreateQuiz() {
               </div>
               <div className="dropdown-item"
                 onClick={() => {
-                  mp4PickerRef.current?.click();
                   setDropdownVisible(false);
                 }}
               >
@@ -386,6 +573,24 @@ export default function CreateQuiz() {
             />
         </div>
       </div>
+      {recentQuiz != null && (
+        <div>
+          <Quiz 
+            key={recentQuiz._id}
+            text={recentQuiz.quizTitle + ": " + recentQuiz.quizType}
+            id={recentQuiz._id}
+          />
+        </div>
+      )}
+      {recentFlashcard != null && (
+        <div>
+          <Flashcard
+            key={recentFlashcard._id}
+            text={recentFlashcard.flashcardTitle + ": " + recentFlashcard.quizType}
+            id={recentFlashcard._id}
+          />
+        </div>
+      )}
       </div>
     </div>
   );

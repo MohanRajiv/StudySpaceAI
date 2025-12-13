@@ -16,11 +16,14 @@ export default async function historyPage(){
             <div className="history-quiz-list">
                 {quizzes && quizzes.map(quizzes => {
                     return (
-                        <Quiz 
-                            key={quizzes._id}
-                            text={quizzes.quizTitle + ": " + quizzes.quizType}
-                            id={quizzes._id}
-                        />
+                        <Quiz
+                        key={quizzes._id}
+                        text={
+                          `${quizzes.quizTitle}: ${quizzes.quizType}: ` +
+                          new Date(quizzes.createdAt).toLocaleString()
+                        }
+                        id={quizzes._id}
+                      />
                     );
                 })}
                 {flashcards && flashcards.map(flashcards => {

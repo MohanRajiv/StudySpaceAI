@@ -3256,6 +3256,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$flashcard$2e$acti
 ;
 ;
 ;
+;
+;
+;
+;
 }),
 "[project]/.next-internal/server/app/create/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@clerk/nextjs/dist/esm/server/keyless-custom-headers.js [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/server-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE3 => \"[project]/actions/quiz.action.js [app-rsc] (ecmascript)\", ACTIONS_MODULE4 => \"[project]/actions/flashcard.action.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)", ((__turbopack_context__) => {
 "use strict";
@@ -3263,8 +3267,16 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$flashcard$2e$acti
 __turbopack_context__.s([
     "409957ddabc9ae4c01bd1727c88751e634308b4eb7",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$flashcard$2e$action$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["createFlashcard"],
+    "40b4c3e6e3a3553217d9f77f69c02cdb08e79d2b7d",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$flashcard$2e$action$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["deleteFlashcard"],
+    "40c68334b32e4f81d5e097494b9c905b4222dd6b78",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$quiz$2e$action$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["deleteQuiz"],
     "40d9eb166d2a161f9cf441e894b61653cc583011e9",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$quiz$2e$action$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["createQuiz"],
+    "6013453523eeb2dcb6c3674e6dc835994550750178",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$flashcard$2e$action$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["updateFlashcard"],
+    "606c1ad7f65505992ac55d8b0fd03c94f5ce960a82",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$actions$2f$quiz$2e$action$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["updateQuiz"],
     "7f6ff82f30cad3a6ddaa38354f01f5722f46cfa6d3",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$clerk$2f$nextjs$2f$dist$2f$esm$2f$app$2d$router$2f$keyless$2d$actions$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["detectKeylessEnvDriftAction"],
     "7f9343acd108553222d0c78d08b3ac53d6b25fbe14",

@@ -118,7 +118,9 @@ function QuizPage() {
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
                 children: (_quiz_questions = quiz.questions) === null || _quiz_questions === void 0 ? void 0 : _quiz_questions.map((q, i)=>{
+                    var _answers_i;
                     const selected = answers[i] || [];
+                    var _answers_i_;
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                         style: {
                             marginBottom: "20px"
@@ -136,7 +138,54 @@ function QuizPage() {
                                 lineNumber: 89,
                                 columnNumber: 15
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                            q.questionType === "Dropdown" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "quizPageOptions",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                        onChange: (e)=>handleSingleSelect(i, Number(e.target.value)),
+                                        className: "input-quiz-option-main",
+                                        value: (_answers_i_ = (_answers_i = answers[i]) === null || _answers_i === void 0 ? void 0 : _answers_i[0]) !== null && _answers_i_ !== void 0 ? _answers_i_ : "",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                value: "",
+                                                disabled: true,
+                                                children: "Select an answer"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/quizPage/page.js",
+                                                lineNumber: 99,
+                                                columnNumber: 21
+                                            }, this),
+                                            q.options.map((opt, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                    value: idx,
+                                                    children: opt
+                                                }, idx, false, {
+                                                    fileName: "[project]/app/quizPage/page.js",
+                                                    lineNumber: 101,
+                                                    columnNumber: 25
+                                                }, this))
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/quizPage/page.js",
+                                        lineNumber: 94,
+                                        columnNumber: 19
+                                    }, this),
+                                    submitted && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            "Correct Answer: ",
+                                            q.options[q.answerIndexes[0]]
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/quizPage/page.js",
+                                        lineNumber: 107,
+                                        columnNumber: 19
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/quizPage/page.js",
+                                lineNumber: 93,
+                                columnNumber: 20
+                            }, this),
+                            q.questionType !== "Dropdown" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
                                 className: "quizPageOptions",
                                 children: q.options.map((opt, optIndex)=>{
                                     const isSelected = selected.includes(optIndex);
@@ -162,21 +211,21 @@ function QuizPage() {
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/app/quizPage/page.js",
-                                                lineNumber: 115,
-                                                columnNumber: 25
+                                                lineNumber: 141,
+                                                columnNumber: 27
                                             }, this),
                                             opt
                                         ]
                                     }, optIndex, true, {
                                         fileName: "[project]/app/quizPage/page.js",
-                                        lineNumber: 103,
-                                        columnNumber: 21
+                                        lineNumber: 129,
+                                        columnNumber: 23
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/app/quizPage/page.js",
-                                lineNumber: 91,
-                                columnNumber: 15
+                                lineNumber: 117,
+                                columnNumber: 17
                             }, this),
                             submitted && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 className: "quizPageQuestionText",
@@ -186,7 +235,7 @@ function QuizPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/quizPage/page.js",
-                                lineNumber: 129,
+                                lineNumber: 157,
                                 columnNumber: 17
                             }, this)
                         ]
@@ -207,7 +256,7 @@ function QuizPage() {
                 children: "Submit Quiz"
             }, void 0, false, {
                 fileName: "[project]/app/quizPage/page.js",
-                lineNumber: 138,
+                lineNumber: 165,
                 columnNumber: 22
             }, this)
         ]

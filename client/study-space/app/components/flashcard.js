@@ -2,7 +2,7 @@
 import { useState } from "react"
 import { deleteFlashcard, updateFlashcard } from "@/actions/flashcard.action";
 import Link from "next/link";
-
+import { PiCardsLight } from "react-icons/pi";
 
 export default function Flashcard({text, id}) {
     const [showUpdateInput, setShowUpdateInput] = useState(false);
@@ -15,22 +15,31 @@ export default function Flashcard({text, id}) {
     };
 
     return (
-        <div className="formInput">
-            <div>
-            <Link key={id} href={`flashcardPage?flashcard_id=${id}`} className="quizHover">
-                {text}
-            </Link>
+        <div className="history-quiz-item">
+            <div className="quiz-top">
+                <div className="quiz-top-icon">
+                    <PiCardsLight 
+                        size={50}
+                    />
+                </div>
             </div>
-            {showUpdateInput && (
-                <input
-                    value={newText}
-                    onChange={(e) => setNewText(e.target.value)}
-                    type="text"
-                    className="formInput"
-                />
-            )}
 
-            <div>
+
+            <div className="quiz-bottom">
+                <Link key={id} href={`flashcardPage?flashcard_id=${id}`} className="quizHover">
+                    {text}
+                </Link>
+
+                {showUpdateInput && (
+                    <input
+                        value={newText}
+                        onChange={(e) => setNewText(e.target.value)}
+                        type="text"
+                        className="formInput"
+                    />
+                )}
+
+                <div className="quiz-buttons">
                 {showUpdateInput ? (
                     <button onClick={() => setShowUpdateInput(!showUpdateInput)}>
                         Cancel
@@ -50,7 +59,7 @@ export default function Flashcard({text, id}) {
                         Update
                     </button>
                 )}
-                
+                </div>
             </div>
         </div>
     )

@@ -134,6 +134,66 @@
       },
       "exportedName": "createFlashcard",
       "filename": "actions/flashcard.action.js"
+    },
+    "40c68334b32e4f81d5e097494b9c905b4222dd6b78": {
+      "workers": {
+        "app/create/page": {
+          "moduleId": "[project]/.next-internal/server/app/create/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@clerk/nextjs/dist/esm/server/keyless-custom-headers.js [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/server-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE3 => \"[project]/actions/quiz.action.js [app-rsc] (ecmascript)\", ACTIONS_MODULE4 => \"[project]/actions/flashcard.action.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "deleteQuiz",
+          "filename": "actions/quiz.action.js"
+        }
+      },
+      "layer": {
+        "app/create/page": "action-browser"
+      },
+      "exportedName": "deleteQuiz",
+      "filename": "actions/quiz.action.js"
+    },
+    "606c1ad7f65505992ac55d8b0fd03c94f5ce960a82": {
+      "workers": {
+        "app/create/page": {
+          "moduleId": "[project]/.next-internal/server/app/create/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@clerk/nextjs/dist/esm/server/keyless-custom-headers.js [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/server-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE3 => \"[project]/actions/quiz.action.js [app-rsc] (ecmascript)\", ACTIONS_MODULE4 => \"[project]/actions/flashcard.action.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "updateQuiz",
+          "filename": "actions/quiz.action.js"
+        }
+      },
+      "layer": {
+        "app/create/page": "action-browser"
+      },
+      "exportedName": "updateQuiz",
+      "filename": "actions/quiz.action.js"
+    },
+    "40b4c3e6e3a3553217d9f77f69c02cdb08e79d2b7d": {
+      "workers": {
+        "app/create/page": {
+          "moduleId": "[project]/.next-internal/server/app/create/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@clerk/nextjs/dist/esm/server/keyless-custom-headers.js [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/server-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE3 => \"[project]/actions/quiz.action.js [app-rsc] (ecmascript)\", ACTIONS_MODULE4 => \"[project]/actions/flashcard.action.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "deleteFlashcard",
+          "filename": "actions/flashcard.action.js"
+        }
+      },
+      "layer": {
+        "app/create/page": "action-browser"
+      },
+      "exportedName": "deleteFlashcard",
+      "filename": "actions/flashcard.action.js"
+    },
+    "6013453523eeb2dcb6c3674e6dc835994550750178": {
+      "workers": {
+        "app/create/page": {
+          "moduleId": "[project]/.next-internal/server/app/create/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@clerk/nextjs/dist/esm/server/keyless-custom-headers.js [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/node_modules/@clerk/nextjs/dist/esm/app-router/server-actions.js [app-rsc] (ecmascript)\", ACTIONS_MODULE3 => \"[project]/actions/quiz.action.js [app-rsc] (ecmascript)\", ACTIONS_MODULE4 => \"[project]/actions/flashcard.action.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "updateFlashcard",
+          "filename": "actions/flashcard.action.js"
+        }
+      },
+      "layer": {
+        "app/create/page": "action-browser"
+      },
+      "exportedName": "updateFlashcard",
+      "filename": "actions/flashcard.action.js"
     }
   },
   "edge": {}
