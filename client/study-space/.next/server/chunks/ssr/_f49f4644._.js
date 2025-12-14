@@ -373,6 +373,7 @@ function CreateQuiz() {
     const [youtubeUrls, setYoutubeUrls] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [quizType, setQuizType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [numberType, setNumberType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [timerType, setTimerType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [questionType, setQuestionType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [pdfFiles, setPdfFiles] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [dropdownVisible, setDropdownVisible] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -381,6 +382,9 @@ function CreateQuiz() {
     const [recentQuiz, setRecentQuiz] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [recentFlashcard, setRecentFlashcard] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [questionTypes, setQuestionTypes] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [hours, setHours] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
+    const [minutes, setMinutes] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
+    const [seconds, setSeconds] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const pdfPickerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const fetchRecentQuiz = async ()=>{
         try {
@@ -648,7 +652,7 @@ function CreateQuiz() {
                 }
             }, void 0, false, {
                 fileName: "[project]/app/create/page.js",
-                lineNumber: 291,
+                lineNumber: 295,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -659,7 +663,7 @@ function CreateQuiz() {
                         children: "StudySpace.AI"
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 319,
+                        lineNumber: 323,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -667,7 +671,7 @@ function CreateQuiz() {
                         children: "Automatically generate interactive quizzes from Youtube Links, PDFs,"
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 322,
+                        lineNumber: 326,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -675,13 +679,13 @@ function CreateQuiz() {
                         children: "or your own notes"
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 326,
+                        lineNumber: 330,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/create/page.js",
-                lineNumber: 318,
+                lineNumber: 322,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -697,7 +701,7 @@ function CreateQuiz() {
                                 children: "-- Select a quiz type --"
                             }, void 0, false, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 338,
+                                lineNumber: 342,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -705,7 +709,7 @@ function CreateQuiz() {
                                 children: "Quiz"
                             }, void 0, false, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 339,
+                                lineNumber: 343,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -713,13 +717,13 @@ function CreateQuiz() {
                                 children: "Flashcard Set"
                             }, void 0, false, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 340,
+                                lineNumber: 344,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 333,
+                        lineNumber: 337,
                         columnNumber: 9
                     }, this),
                     quizType == "Quiz" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -736,7 +740,7 @@ function CreateQuiz() {
                                 children: "Select All"
                             }, void 0, false, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 345,
+                                lineNumber: 349,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -747,14 +751,14 @@ function CreateQuiz() {
                                         onChange: ()=>toggleQuestionType("Multiple Choice")
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 351,
+                                        lineNumber: 355,
                                         columnNumber: 15
                                     }, this),
                                     "Multiple Choice"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 350,
+                                lineNumber: 354,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -765,14 +769,14 @@ function CreateQuiz() {
                                         onChange: ()=>toggleQuestionType("True or False")
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 359,
+                                        lineNumber: 363,
                                         columnNumber: 15
                                     }, this),
                                     "True or False"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 358,
+                                lineNumber: 362,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -783,14 +787,14 @@ function CreateQuiz() {
                                         onChange: ()=>toggleQuestionType("Multiple Answer")
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 367,
+                                        lineNumber: 371,
                                         columnNumber: 15
                                     }, this),
                                     "Multiple Answer"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 366,
+                                lineNumber: 370,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -801,14 +805,14 @@ function CreateQuiz() {
                                         onChange: ()=>toggleQuestionType("Dropdown")
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 375,
+                                        lineNumber: 379,
                                         columnNumber: 15
                                     }, this),
                                     "Dropdown"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 374,
+                                lineNumber: 378,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -821,7 +825,7 @@ function CreateQuiz() {
                                         children: "- Number type -"
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 387,
+                                        lineNumber: 391,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -829,7 +833,7 @@ function CreateQuiz() {
                                         children: "Single Number"
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 388,
+                                        lineNumber: 392,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -837,19 +841,46 @@ function CreateQuiz() {
                                         children: "Multiple Number"
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 389,
+                                        lineNumber: 393,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 382,
+                                lineNumber: 386,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                onChange: (e)=>setTimerType(e.target.value),
+                                className: "input-quiz-option-secondary-two",
+                                value: timerType,
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                        value: "",
+                                        children: "- Timer: None -"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/create/page.js",
+                                        lineNumber: 400,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                        value: "Set Timer",
+                                        children: "- Set Timer -"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/create/page.js",
+                                        lineNumber: 401,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/create/page.js",
+                                lineNumber: 395,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 344,
+                        lineNumber: 348,
                         columnNumber: 11
                     }, this),
                     quizType == "Flashcard" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -864,7 +895,7 @@ function CreateQuiz() {
                                 children: "Select All"
                             }, void 0, false, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 396,
+                                lineNumber: 408,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -875,14 +906,14 @@ function CreateQuiz() {
                                         onChange: ()=>toggleQuestionType("Definitions")
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 402,
+                                        lineNumber: 414,
                                         columnNumber: 15
                                     }, this),
                                     "Definitions"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 401,
+                                lineNumber: 413,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -893,14 +924,14 @@ function CreateQuiz() {
                                         onChange: ()=>toggleQuestionType("Questions")
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 410,
+                                        lineNumber: 422,
                                         columnNumber: 15
                                     }, this),
                                     "Questions"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 409,
+                                lineNumber: 421,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -913,7 +944,7 @@ function CreateQuiz() {
                                         children: "- Number type -"
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 422,
+                                        lineNumber: 434,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -921,7 +952,7 @@ function CreateQuiz() {
                                         children: "Single Number"
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 423,
+                                        lineNumber: 435,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -929,19 +960,19 @@ function CreateQuiz() {
                                         children: "Multiple Number"
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 424,
+                                        lineNumber: 436,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 417,
+                                lineNumber: 429,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 395,
+                        lineNumber: 407,
                         columnNumber: 11
                     }, this),
                     quizType == "Quiz" && numberType == "Single Number" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -952,7 +983,7 @@ function CreateQuiz() {
                         value: numberCounts[0] ?? ""
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 430,
+                        lineNumber: 442,
                         columnNumber: 11
                     }, this),
                     quizType == "Quiz" && numberType == "Multiple Number" && questionTypes.length > 0 && questionTypes.map((type, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -961,7 +992,7 @@ function CreateQuiz() {
                                     children: type
                                 }, void 0, false, {
                                     fileName: "[project]/app/create/page.js",
-                                    lineNumber: 442,
+                                    lineNumber: 454,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -972,15 +1003,68 @@ function CreateQuiz() {
                                     value: numberCounts[index] ?? ""
                                 }, void 0, false, {
                                     fileName: "[project]/app/create/page.js",
-                                    lineNumber: 443,
+                                    lineNumber: 455,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, type, true, {
                             fileName: "[project]/app/create/page.js",
-                            lineNumber: 441,
+                            lineNumber: 453,
                             columnNumber: 13
                         }, this)),
+                    quizType == "Quiz" && timerType == "Set Timer" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                children: "Set Timer"
+                            }, void 0, false, {
+                                fileName: "[project]/app/create/page.js",
+                                lineNumber: 468,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "number",
+                                min: "0",
+                                placeholder: "Hours",
+                                value: hours,
+                                onChange: (e)=>setHours(Number(e.target.value)),
+                                className: "input-quiz-option-secondary-two"
+                            }, void 0, false, {
+                                fileName: "[project]/app/create/page.js",
+                                lineNumber: 469,
+                                columnNumber: 1
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "number",
+                                min: "0",
+                                max: "59",
+                                placeholder: "Minutes",
+                                value: minutes,
+                                onChange: (e)=>setMinutes(Number(e.target.value)),
+                                className: "input-quiz-option-secondary-two"
+                            }, void 0, false, {
+                                fileName: "[project]/app/create/page.js",
+                                lineNumber: 478,
+                                columnNumber: 5
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "number",
+                                min: "0",
+                                max: "59",
+                                placeholder: "Seconds",
+                                value: seconds,
+                                onChange: (e)=>setSeconds(Number(e.target.value)),
+                                className: "input-quiz-option-secondary-two"
+                            }, void 0, false, {
+                                fileName: "[project]/app/create/page.js",
+                                lineNumber: 488,
+                                columnNumber: 5
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/create/page.js",
+                        lineNumber: 467,
+                        columnNumber: 11
+                    }, this),
                     quizType == "Flashcard" && numberType == "Single Number" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                         type: "number",
                         className: "input-quiz-option-secondary-two",
@@ -989,7 +1073,7 @@ function CreateQuiz() {
                         value: numberCounts[0] ?? ""
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 455,
+                        lineNumber: 501,
                         columnNumber: 11
                     }, this),
                     quizType == "Flashcard" && numberType == "Multiple Number" && questionTypes.length > 0 && questionTypes.map((type, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -998,7 +1082,7 @@ function CreateQuiz() {
                                     children: type
                                 }, void 0, false, {
                                     fileName: "[project]/app/create/page.js",
-                                    lineNumber: 467,
+                                    lineNumber: 513,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1009,13 +1093,13 @@ function CreateQuiz() {
                                     value: numberCounts[index] ?? ""
                                 }, void 0, false, {
                                     fileName: "[project]/app/create/page.js",
-                                    lineNumber: 468,
+                                    lineNumber: 514,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, type, true, {
                             fileName: "[project]/app/create/page.js",
-                            lineNumber: 466,
+                            lineNumber: 512,
                             columnNumber: 13
                         }, this)),
                     YoutubeBarVisible && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1028,7 +1112,7 @@ function CreateQuiz() {
                                     color: "red"
                                 }, void 0, false, {
                                     fileName: "[project]/app/create/page.js",
-                                    lineNumber: 482,
+                                    lineNumber: 528,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1039,7 +1123,7 @@ function CreateQuiz() {
                                     className: "youtube-Bar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/create/page.js",
-                                    lineNumber: 485,
+                                    lineNumber: 531,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$io5$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["IoTrashSharp"], {
@@ -1048,7 +1132,7 @@ function CreateQuiz() {
                                     color: "grey"
                                 }, void 0, false, {
                                     fileName: "[project]/app/create/page.js",
-                                    lineNumber: 494,
+                                    lineNumber: 540,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$hi$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["HiCheck"], {
@@ -1057,18 +1141,18 @@ function CreateQuiz() {
                                     color: "grey"
                                 }, void 0, false, {
                                     fileName: "[project]/app/create/page.js",
-                                    lineNumber: 495,
+                                    lineNumber: 541,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/create/page.js",
-                            lineNumber: 481,
+                            lineNumber: 527,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 480,
+                        lineNumber: 526,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1087,18 +1171,18 @@ function CreateQuiz() {
                                                     onClick: ()=>setPdfFiles((prev)=>prev.filter((_, index)=>index !== i)),
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FaTimes"], {}, void 0, false, {
                                                         fileName: "[project]/app/create/page.js",
-                                                        lineNumber: 510,
+                                                        lineNumber: 556,
                                                         columnNumber: 17
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/create/page.js",
-                                                    lineNumber: 505,
+                                                    lineNumber: 551,
                                                     columnNumber: 15
                                                 }, this)
                                             ]
                                         }, i, true, {
                                             fileName: "[project]/app/create/page.js",
-                                            lineNumber: 503,
+                                            lineNumber: 549,
                                             columnNumber: 13
                                         }, this)),
                                     youtubeUrls.map((url, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1109,7 +1193,7 @@ function CreateQuiz() {
                                                     className: "youtube-thumbnail"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/create/page.js",
-                                                    lineNumber: 518,
+                                                    lineNumber: 564,
                                                     columnNumber: 13
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1118,24 +1202,24 @@ function CreateQuiz() {
                                                     onClick: ()=>setYoutubeUrls((prev)=>prev.filter((_, index)=>index !== i)),
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FaTimes"], {}, void 0, false, {
                                                         fileName: "[project]/app/create/page.js",
-                                                        lineNumber: 529,
+                                                        lineNumber: 575,
                                                         columnNumber: 15
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/create/page.js",
-                                                    lineNumber: 522,
+                                                    lineNumber: 568,
                                                     columnNumber: 13
                                                 }, this)
                                             ]
                                         }, i, true, {
                                             fileName: "[project]/app/create/page.js",
-                                            lineNumber: 517,
+                                            lineNumber: 563,
                                             columnNumber: 13
                                         }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 500,
+                                lineNumber: 546,
                                 columnNumber: 9
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1147,7 +1231,7 @@ function CreateQuiz() {
                                         color: "black"
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 536,
+                                        lineNumber: 582,
                                         columnNumber: 11
                                     }, this),
                                     dropdownVisible && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1162,7 +1246,7 @@ function CreateQuiz() {
                                                 children: "Add PDF File"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/create/page.js",
-                                                lineNumber: 541,
+                                                lineNumber: 587,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1173,7 +1257,7 @@ function CreateQuiz() {
                                                 children: "Add MP4 File"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/create/page.js",
-                                                lineNumber: 550,
+                                                lineNumber: 596,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1182,13 +1266,13 @@ function CreateQuiz() {
                                                 children: "Add Youtube Video"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/create/page.js",
-                                                lineNumber: 557,
+                                                lineNumber: 603,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 540,
+                                        lineNumber: 586,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1198,7 +1282,7 @@ function CreateQuiz() {
                                         value: textValue
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 563,
+                                        lineNumber: 609,
                                         columnNumber: 11
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$bs$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["BsArrowUpCircleFill"], {
@@ -1207,19 +1291,19 @@ function CreateQuiz() {
                                         onClick: handleSubmit
                                     }, void 0, false, {
                                         fileName: "[project]/app/create/page.js",
-                                        lineNumber: 569,
+                                        lineNumber: 615,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/create/page.js",
-                                lineNumber: 535,
+                                lineNumber: 581,
                                 columnNumber: 9
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 499,
+                        lineNumber: 545,
                         columnNumber: 7
                     }, this),
                     recentQuiz != null && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1228,12 +1312,12 @@ function CreateQuiz() {
                             id: recentQuiz._id
                         }, recentQuiz._id, false, {
                             fileName: "[project]/app/create/page.js",
-                            lineNumber: 578,
+                            lineNumber: 624,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 577,
+                        lineNumber: 623,
                         columnNumber: 9
                     }, this),
                     recentFlashcard != null && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1242,24 +1326,24 @@ function CreateQuiz() {
                             id: recentFlashcard._id
                         }, recentFlashcard._id, false, {
                             fileName: "[project]/app/create/page.js",
-                            lineNumber: 587,
+                            lineNumber: 633,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/create/page.js",
-                        lineNumber: 586,
+                        lineNumber: 632,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/create/page.js",
-                lineNumber: 332,
+                lineNumber: 336,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/create/page.js",
-        lineNumber: 290,
+        lineNumber: 294,
         columnNumber: 5
     }, this);
 }

@@ -1,11 +1,79 @@
 "use client";
 
-import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const { user } = useUser();
+  const [randomInput, setRandomInput] = useState('');
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [totalSeconds, setTotalSeconds] = useState(0);
+  const [timerExpired, setTimerExpired] = useState(false);
+  const renders = useRef(0);
+  const timerId = useRef();
+  const [hideInput, setHideInput] = useState(false);
+
+  const handleChange = (e) => {
+    setRandomInput(e.target.value);
+    renders.current++;
+  }
+
+  const buildTotalSeconds = () => {
+    return hours * 3600 + minutes * 60 + seconds;
+  };
+
+  const setTimer = (seconds) => {
+    setTotalSeconds(seconds)
+  }
+
+  const startTimer = () => {
+    if (timerId.current) return;
+  
+    const total = buildTotalSeconds();
+    if (total <= 0) return;
+  
+    setHideInput(true);
+    setTimerExpired(false);
+    setTotalSeconds(total);
+  
+    timerId.current = setInterval(() => {
+      setTotalSeconds(prev => {
+        if (prev <= 1) {
+          clearInterval(timerId.current);
+          timerId.current = null;
+          setTimerExpired(true);
+          setHideInput(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+  
+  const stopTimer = () => {
+    clearInterval(timerId.current);
+    timerId.current = null;
+  };
+  
+  const resetTimer = () => {
+    stopTimer();
+    setTimerExpired(false);
+    setHideInput(false);
+    setTotalSeconds(0);
+    setHours(0);
+    setMinutes(0);
+    setSeconds(0);
+  };
+
+  const formatTime = (secs) => {
+    const h = Math.floor(secs / 3600);
+    const m = Math.floor((secs % 3600) / 60);
+    const s = secs % 60;
+  
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  };
 
   useEffect(() => {
     if (user) {
@@ -24,56 +92,54 @@ export default function Home() {
   }, [user]);
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div>
+        {!hideInput && (
+  <div>
+    <p className="quizPageTextSecondary">Set Time</p>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      
+    <input
+      type="number"
+      min="0"
+      placeholder="Hours"
+      value={hours}
+      onChange={e => setHours(Number(e.target.value))}
+      className="input-quiz-option-secondary-two"
+    />
+
+    <input
+      type="number"
+      min="0"
+      max="59"
+      placeholder="Minutes"
+      value={minutes}
+      onChange={e => setMinutes(Number(e.target.value))}
+      className="input-quiz-option-secondary-two"
+    />
+
+    <input
+      type="number"
+      min="0"
+      max="59"
+      placeholder="Seconds"
+      value={seconds}
+      onChange={e => setSeconds(Number(e.target.value))}
+      className="input-quiz-option-secondary-two"
+    />
+  </div>
+)}
+
+        
+        <p className="quizPageTextSecondary">Time Remaining: {formatTime(totalSeconds)}</p>
+        <section>
+          <button className= "submitQuizButton" onClick={startTimer}>Start</button>
+          <button className= "submitQuizButton" onClick={stopTimer}>Stop</button>
+          <button className= "submitQuizButton" onClick={resetTimer}>Reset</button>
+        </section>
+        {timerExpired && (
+          <div className="quizPageTextSecondary">
+            Timer Expired
+          </div>
+        )}
     </div>
   );
 }

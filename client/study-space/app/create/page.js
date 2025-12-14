@@ -22,6 +22,7 @@ export default function CreateQuiz() {
   const [youtubeUrls, setYoutubeUrls] = useState([]);
   const [quizType, setQuizType] = useState("");
   const [numberType, setNumberType] = useState("");
+  const [timerType, setTimerType] = useState("");
   const [questionType, setQuestionType] = useState("");
   const [pdfFiles, setPdfFiles] = useState([]);
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -30,6 +31,9 @@ export default function CreateQuiz() {
   const [recentQuiz, setRecentQuiz] = useState(null);
   const [recentFlashcard, setRecentFlashcard] = useState(null);
   const [questionTypes, setQuestionTypes] = useState([]);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
   const pdfPickerRef = useRef(null);
 
   const fetchRecentQuiz = async () => {
@@ -388,6 +392,14 @@ export default function CreateQuiz() {
               <option value="Single Number">Single Number</option>
               <option value="Multiple Number">Multiple Number</option>
             </select>
+            <select
+              onChange={(e) => setTimerType(e.target.value)}
+              className="input-quiz-option-secondary-two"
+              value={timerType}
+            >
+              <option value="">- Timer: None -</option>
+              <option value="Set Timer">- Set Timer -</option>
+            </select>
           </div>
         )}
 
@@ -449,6 +461,40 @@ export default function CreateQuiz() {
               />
             </div>
           ))
+        )}
+
+        {quizType == "Quiz" && timerType == "Set Timer" && (
+          <div>
+            <label>Set Timer</label>
+<input
+      type="number"
+      min="0"
+      placeholder="Hours"
+      value={hours}
+      onChange={e => setHours(Number(e.target.value))}
+      className="input-quiz-option-secondary-two"
+    />
+
+    <input
+      type="number"
+      min="0"
+      max="59"
+      placeholder="Minutes"
+      value={minutes}
+      onChange={e => setMinutes(Number(e.target.value))}
+      className="input-quiz-option-secondary-two"
+    />
+
+    <input
+      type="number"
+      min="0"
+      max="59"
+      placeholder="Seconds"
+      value={seconds}
+      onChange={e => setSeconds(Number(e.target.value))}
+      className="input-quiz-option-secondary-two"
+    />
+          </div>
         )}
 
         {quizType == "Flashcard" && numberType=="Single Number" && (
