@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/admin/Downloads/study-space-ai/client/study-space/app/history/loading.js"],"sourcesContent":["export default function Loading(){\n    return <div>Loading Quizzes...</div>\n}"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACpB,qBAAO,8OAAC;kBAAI;;;;;;AAChB","debugId":null}}]
-}
