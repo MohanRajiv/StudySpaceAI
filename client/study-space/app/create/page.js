@@ -1,5 +1,6 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { createQuiz } from "@/actions/quiz.action";
 import { createFlashcard } from "@/actions/flashcard.action";
 import Quiz from "../components/quiz";
@@ -11,8 +12,12 @@ import { GrAdd } from "react-icons/gr";
 import {FaTimes } from "react-icons/fa";
 import { HiCheck } from "react-icons/hi";
 import Flashcard from "../components/flashcard";
+import { GoogleDriveIcon } from "../components/google-drive-icon";
+import { GoogleDrivePicker } from "../components/google-drive-picker";
+import { GoogleDrivePickerButton } from "../components/google-drive-picker-button";
 
 export default function CreateQuiz() {
+  const searchParams = useSearchParams();
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [number, setNumber] = useState("");
@@ -24,6 +29,8 @@ export default function CreateQuiz() {
   const [numberType, setNumberType] = useState("");
   const [questionType, setQuestionType] = useState("");
   const [pdfFiles, setPdfFiles] = useState([]);
+  const [driveFiles, setDriveFiles] = useState([]);
+  const [showGoogleDrivePicker, setShowGoogleDrivePicker] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [YoutubeBarVisible, setYoutubeBarVisible] = useState(false);
   const [YoutubeVideoDisplay, setYoutubeVideoDisplay] = useState(false);
@@ -32,6 +39,18 @@ export default function CreateQuiz() {
   const [questionTypes, setQuestionTypes] = useState([]);
   const pdfPickerRef = useRef(null);
 
+  // Check if user just connected Google Drive and show picker
+  useEffect(() => {
+    const googleDriveParam = searchParams.get("google_drive");
+    if (googleDriveParam === "connected") {
+      setShowGoogleDrivePicker(true);
+      // Clean up URL by removing the query parameter
+      const url = new URL(window.location.href);
+      url.searchParams.delete("google_drive");
+      window.history.replaceState({}, "", url);
+    }
+  }, [searchParams]);
+
   const fetchRecentQuiz = async () => {
     try {
       const res = await fetch("/api/get-recent-quiz");
@@ -39,6 +58,7 @@ export default function CreateQuiz() {
       console.log("Recent Quiz (API Response):", data);
       setRecentQuiz(data);
       setPdfFiles([]);
+      setDriveFiles([]);
       setYoutubeUrls([]);
       setTextValue([]);
       setQuizType("");
@@ -54,6 +74,7 @@ export default function CreateQuiz() {
       console.log("Recent Flashcard (API Response):", data);
       setRecentFlashcard(data);
       setPdfFiles([]);
+      setDriveFiles([]);
       setYoutubeUrls([]);
       setTextValue([]);
       setQuizType("");
@@ -172,17 +193,22 @@ export default function CreateQuiz() {
     try {
         setLoading(true);
         let combinedText = "";
-        const files = pdfFiles;
+        // Combine regular files and Drive files
+        const allFiles = [...pdfFiles, ...driveFiles];
 
-        if (files.length === 0 && !textValue.trim() && youtubeUrls.length == 0) {
+        if (allFiles.length === 0 && !textValue.trim() && youtubeUrls.length == 0) {
           alert("Please enter an input.");
           setLoading(false);
           return;
         }
 
-        if (files.length !== 0) {
-          for (const file of files) {
-            if (file.type.startsWith("video/")) {
+        if (allFiles.length !== 0) {
+          for (const file of allFiles) {
+            // Check if file has type property and if it's a video
+            // Google Drive files are always PDFs, so handle them accordingly
+            const fileType = file.type || file.driveMimeType || "application/pdf";
+            
+            if (fileType && fileType.startsWith("video/")) {
               const formData = new FormData();
               formData.append("file", file);
 
@@ -200,6 +226,7 @@ export default function CreateQuiz() {
               uploadedVideoUri = data.fileUri;
               uploadedVideoMimeType = data.mimeType;
             } else {
+              // All other files (PDFs from regular upload or Google Drive) go to parse-pdf
               const formData = new FormData();
               formData.append("file", file);
           
@@ -207,8 +234,21 @@ export default function CreateQuiz() {
                 method: "POST",
                 body: formData,
               });
+
+              if (!res.ok) {
+                const errorData = await res.json().catch(() => ({ error: "Failed to parse PDF" }));
+                throw new Error(errorData.error || "Failed to parse PDF file");
+              }
           
-              const data = await res.json();
+              const data = await res.json().catch((err) => {
+                console.error("Error parsing parse-pdf response:", err);
+                throw new Error("Invalid response from PDF parser");
+              });
+
+              if (!data || typeof data !== 'object') {
+                throw new Error("Invalid response format from PDF parser");
+              }
+
               combinedText += "\n" + (data.text || "");
             }
           }
@@ -238,6 +278,12 @@ export default function CreateQuiz() {
           }
         }
         
+      if (!combinedText.trim()) {
+        alert("No content extracted from files. Please ensure your PDF files contain readable text.");
+        setLoading(false);
+        return;
+      }
+
       const quizRes = await fetch("/api/gemini-route", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -249,19 +295,37 @@ export default function CreateQuiz() {
         }),
       });
 
-      const quizData = await quizRes.json();
+      if (!quizRes.ok) {
+        const errorData = await quizRes.json().catch(() => ({ error: "Failed to generate quiz" }));
+        throw new Error(errorData.error || "Failed to generate quiz");
+      }
+
+      const quizData = await quizRes.json().catch((err) => {
+        console.error("Error parsing gemini-route response:", err);
+        throw new Error("Invalid response from quiz generator");
+      });
 
       let parsedQuiz;
       try {
-        const textContent = quizData.text || "";
+        const textContent = quizData?.text || "";
         if (!textContent) {
             throw new Error("Empty response from AI");
         }
         const cleanedText = textContent.replace(/```json/i, "").replace(/```/g, "").trim();
+        
+        if (!cleanedText) {
+          throw new Error("No JSON content found in AI response");
+        }
+
         parsedQuiz = JSON.parse(cleanedText);
       } catch (error) {
         console.error("Error parsing quizData.text:", error);
-        alert("Failed to parse quiz data — Gemini output wasn't valid JSON");
+        console.error("Raw response:", quizData);
+        const textContent = quizData?.text || "";
+        const cleanedText = textContent.replace(/```json/i, "").replace(/```/g, "").trim();
+        console.error("Cleaned text:", cleanedText);
+        alert(`Failed to parse quiz data: ${error.message}. The AI response may be incomplete or invalid.`);
+        setLoading(false);
         return;
       }
 
@@ -497,7 +561,22 @@ export default function CreateQuiz() {
         </div>
         )}
       <div className="search-bar-container">
-        <div className={`pdf-file-list ${pdfFiles.length > 0 || YoutubeVideoDisplay ? "pdf-padding-bottom" : ""}`}>
+        {/* Render picker component (hidden, just to initialize the picker) */}
+        <div style={{ display: 'none' }}>
+          <GoogleDrivePicker
+            onFilesSelected={(file) => {
+              setDriveFiles(prev => [...prev, file]);
+              setShowGoogleDrivePicker(false);
+            }}
+            selectedDriveFiles={driveFiles}
+            onRemoveFile={(index) => {
+              setDriveFiles(prev => prev.filter((_, i) => i !== index));
+            }}
+            autoOpen={showGoogleDrivePicker}
+            showButton={false}
+          />
+        </div>
+        <div className={`pdf-file-list ${pdfFiles.length > 0 || driveFiles.length > 0 || YoutubeVideoDisplay ? "pdf-padding-bottom" : ""}`}>
           {pdfFiles.length > 0 && (
             pdfFiles.map((file, i) => (
             <div key={i} className="pdf-file-item">
@@ -506,6 +585,22 @@ export default function CreateQuiz() {
                 type="button"
                 className="clear-pdf-btn"
                 onClick={() => setPdfFiles(prev => prev.filter((_, index) => index !== i))}
+              >
+                <FaTimes />
+              </button>
+            </div>
+            ))
+          )}
+
+          {driveFiles.length > 0 && (
+            driveFiles.map((file, i) => (
+            <div key={i} className="pdf-file-item">
+              <GoogleDriveIcon size={16} style={{ marginRight: '8px' }} />
+              {file.driveName || file.name}
+              <button
+                type="button"
+                className="clear-pdf-btn"
+                onClick={() => setDriveFiles(prev => prev.filter((_, index) => index !== i))}
               >
                 <FaTimes />
               </button>
@@ -536,6 +631,9 @@ export default function CreateQuiz() {
           <GrAdd size={20} onClick={toggleDropdown}
             color="black"
           />
+          <GoogleDrivePickerButton onFileSelected={(file) => {
+            setDriveFiles(prev => [...prev, file]);
+          }} />
           {dropdownVisible && (
             <div className="dropdown-menu">
               <div

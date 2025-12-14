@@ -508,3 +508,231 @@ a {
   border-radius: 6px;
   color: white;
 }
+
+/* Google Drive Picker Styles */
+.google-drive-picker-wrapper {
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 5;
+}
+
+.google-drive-connect {
+  margin-top: 10px;
+}
+
+.google-drive-connect-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: white;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: black;
+  transition: background-color 0.2s ease;
+}
+
+.google-drive-connect-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.google-drive-connect-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.google-drive-open-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: white;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: black;
+  transition: background-color 0.2s ease;
+}
+
+.google-drive-open-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.google-drive-open-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.google-drive-picker {
+  position: relative;
+  background-color: white;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  max-height: 350px;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  margin-bottom: 10px;
+}
+
+.google-drive-picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: black;
+}
+
+.close-picker-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+.close-picker-btn:hover {
+  color: black;
+}
+
+.google-drive-search {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.google-drive-search input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: black;
+  outline: none;
+}
+
+.google-drive-search input:focus {
+  border-color: var(--accent-clr);
+}
+
+.google-drive-search button {
+  padding: 8px 16px;
+  background-color: var(--accent-clr);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: opacity 0.2s ease;
+}
+
+.google-drive-search button:hover {
+  opacity: 0.9;
+}
+
+.google-drive-search button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.google-drive-files-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.google-drive-file-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.google-drive-file-item:hover {
+  background-color: #f5f5f5;
+  border-color: var(--accent-clr);
+}
+
+.file-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-name {
+  font-weight: 500;
+  color: black;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-meta {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+.loading-text,
+.no-files-text {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.selected-drive-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.selected-drive-file-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: black;
+}
+
+.remove-drive-file-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+.remove-drive-file-btn:hover {
+  color: black;
+}
