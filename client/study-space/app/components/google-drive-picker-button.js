@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { GoogleDrivePicker } from "./google-drive-picker";
 import { GoogleDriveIcon } from "./google-drive-icon";
 
-export const GoogleDrivePickerButton = ({ onFileSelected }) => {
+export const GoogleDrivePickerButton = ({ onFileSelected, onBeforeConnect }) => {
   const [openPicker, setOpenPicker] = useState(null);
 
   useEffect(() => {
@@ -27,6 +27,7 @@ export const GoogleDrivePickerButton = ({ onFileSelected }) => {
           selectedDriveFiles={[]}
           onRemoveFile={() => {}}
           showButton={false}
+          onBeforeConnect={onBeforeConnect}
         />
       </div>
       <button

@@ -39,10 +39,54 @@ export default function CreateQuiz() {
   const [questionTypes, setQuestionTypes] = useState([]);
   const pdfPickerRef = useRef(null);
 
-  // Check if user just connected Google Drive and show picker
+  // Save state to localStorage before OAuth redirect
+  const savePageState = () => {
+    if (typeof window !== 'undefined') {
+      const state = {
+        quizType,
+        numberType,
+        questionTypes,
+        questionType,
+        number,
+        numberCounts,
+        text,
+        textValue,
+        youtubeUrl,
+        youtubeUrls,
+        pdfFiles: pdfFiles.map(f => ({ name: f.name, size: f.size, type: f.type })),
+        driveFiles: driveFiles.map(f => ({ name: f.name || f.driveName, size: f.size })),
+      };
+      localStorage.setItem('createPageState', JSON.stringify(state));
+    }
+  };
+
+  // Restore state from localStorage after OAuth callback
   useEffect(() => {
     const googleDriveParam = searchParams.get("google_drive");
     if (googleDriveParam === "connected") {
+      // Restore saved state
+      if (typeof window !== 'undefined') {
+        const savedState = localStorage.getItem('createPageState');
+        if (savedState) {
+          try {
+            const state = JSON.parse(savedState);
+            if (state.quizType) setQuizType(state.quizType);
+            if (state.numberType) setNumberType(state.numberType);
+            if (state.questionTypes?.length) setQuestionTypes(state.questionTypes);
+            if (state.questionType) setQuestionType(state.questionType);
+            if (state.number) setNumber(state.number);
+            if (state.numberCounts?.length) setNumberCounts(state.numberCounts);
+            if (state.text) setText(state.text);
+            if (state.textValue) setTextValue(state.textValue);
+            if (state.youtubeUrl) setYoutubeUrl(state.youtubeUrl);
+            if (state.youtubeUrls?.length) setYoutubeUrls(state.youtubeUrls);
+            // Note: pdfFiles and driveFiles can't be fully restored (File objects), but names are preserved
+            localStorage.removeItem('createPageState');
+          } catch (error) {
+            console.error("Error restoring page state:", error);
+          }
+        }
+      }
       setShowGoogleDrivePicker(true);
       // Clean up URL by removing the query parameter
       const url = new URL(window.location.href);
@@ -574,6 +618,7 @@ export default function CreateQuiz() {
             }}
             autoOpen={showGoogleDrivePicker}
             showButton={false}
+            onBeforeConnect={savePageState}
           />
         </div>
         <div className={`pdf-file-list ${pdfFiles.length > 0 || driveFiles.length > 0 || YoutubeVideoDisplay ? "pdf-padding-bottom" : ""}`}>
@@ -631,9 +676,12 @@ export default function CreateQuiz() {
           <GrAdd size={20} onClick={toggleDropdown}
             color="black"
           />
-          <GoogleDrivePickerButton onFileSelected={(file) => {
-            setDriveFiles(prev => [...prev, file]);
-          }} />
+          <GoogleDrivePickerButton 
+            onFileSelected={(file) => {
+              setDriveFiles(prev => [...prev, file]);
+            }}
+            onBeforeConnect={savePageState}
+          />
           {dropdownVisible && (
             <div className="dropdown-menu">
               <div

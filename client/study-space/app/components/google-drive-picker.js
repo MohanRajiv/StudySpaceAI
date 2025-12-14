@@ -7,7 +7,7 @@ import { GoogleDriveIcon } from "./google-drive-icon";
 // Export a function to open the picker that can be called from parent
 let openPickerFunction = null;
 
-export const GoogleDrivePicker = ({ onFilesSelected, selectedDriveFiles, onRemoveFile, autoOpen = false, showButton = true }) => {
+export const GoogleDrivePicker = ({ onFilesSelected, selectedDriveFiles, onRemoveFile, autoOpen = false, showButton = true, onBeforeConnect }) => {
   const { userId } = useAuth();
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -57,16 +57,24 @@ export const GoogleDrivePicker = ({ onFilesSelected, selectedDriveFiles, onRemov
       if (res.ok) {
         setIsConnected(true);
       } else if (res.status === 400) {
+        // Expected when not connected - silently set to false
         setIsConnected(false);
       }
     } catch (error) {
+      // Network errors - silently set to false
       setIsConnected(false);
     }
   };
 
-  const handleConnect = async () => {
+  const handleConnect = useCallback(async () => {
     try {
       setIsLoading(true);
+      
+      // Save current page state before redirecting (if callback provided)
+      if (onBeforeConnect && typeof onBeforeConnect === 'function') {
+        onBeforeConnect();
+      }
+      
       const res = await fetch("/api/google-drive/auth");
       const data = await res.json();
       
@@ -84,7 +92,7 @@ export const GoogleDrivePicker = ({ onFilesSelected, selectedDriveFiles, onRemov
       alert(error.message || "Failed to connect to Google Drive. Please check your environment configuration.");
       setIsLoading(false);
     }
-  };
+  }, [onBeforeConnect]);
 
   const pickerCallback = useCallback(async (data) => {
     if (data[window.google.picker.Response.ACTION] === window.google.picker.Action.PICKED) {
@@ -145,12 +153,13 @@ export const GoogleDrivePicker = ({ onFilesSelected, selectedDriveFiles, onRemov
     try {
       setIsLoading(true);
 
-      // Get access token and client ID
+      // Get access token and client ID - this will tell us if connected
       const tokenRes = await fetch("/api/google-drive/picker-token");
       
-      if (tokenRes.status === 401) {
+      if (tokenRes.status === 401 || tokenRes.status === 400) {
         setIsConnected(false);
-        alert("Google Drive connection expired. Please reconnect.");
+        // Instead of alert, trigger the connect flow
+        handleConnect();
         setIsLoading(false);
         return;
       }
@@ -186,21 +195,20 @@ export const GoogleDrivePicker = ({ onFilesSelected, selectedDriveFiles, onRemov
       alert("Failed to open Google Drive picker. Please try again.");
       setIsLoading(false);
     }
-  }, [pickerLoaded, pickerCallback]);
+  }, [pickerLoaded, pickerCallback, isConnected, handleConnect]);
 
   // Expose the open picker function globally so it can be called from anywhere
+  // Always expose it, so clicking the icon works even when not connected (will trigger connect flow)
   useEffect(() => {
-    if (isConnected && pickerLoaded) {
-      openPickerFunction = handleOpenPicker;
-      window.openGoogleDrivePicker = handleOpenPicker;
-    }
+    openPickerFunction = handleOpenPicker;
+    window.openGoogleDrivePicker = handleOpenPicker;
     return () => {
       openPickerFunction = null;
       if (window.openGoogleDrivePicker) {
         delete window.openGoogleDrivePicker;
       }
     };
-  }, [isConnected, pickerLoaded, handleOpenPicker]);
+  }, [handleOpenPicker]);
 
   // Don't render anything if showButton is false (for when we just want to expose the function)
   if (!showButton) {
