@@ -54,6 +54,7 @@ export async function createQuiz(quizData) {
       quizTitle: quizData.questions[0]?.quizTitle || "Untitled Quiz",
       questions: formattedQuestions,
       quizType: quizData.questions[0]?.quizType || "Untitled Option",
+      timerSeconds: quizData.timerSeconds,
     });
   
     revalidatePath("/");

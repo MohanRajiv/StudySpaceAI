@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const {text, numOfQuestions, quizType, questionTypes} = await req.json(); 
+    const {text, numOfQuestions, quizType, questionTypes, timerSeconds} = await req.json(); 
 
     if (!text || !numOfQuestions) {
       return NextResponse.json({ error: "No text or video input provided" }, { status: 400 });
@@ -128,7 +128,7 @@ export async function POST(req) {
     const result = await model.generateContent(prompt);
     const output = result.response.text(); 
 
-    return NextResponse.json({ text: output }); 
+    return NextResponse.json({ text: output, timerSeconds}); 
   } catch (error) {
     console.error("Error calling Gemini API:", error);
     return NextResponse.json(

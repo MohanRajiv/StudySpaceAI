@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function QuizPage() {
   const searchParams = useSearchParams();
@@ -9,6 +9,9 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState({}); // stores selected answers
   const [submitted, setSubmitted] = useState(false);
   const [scoreCount, setScoreCount] = useState(0);
+  const [totalSeconds, setTotalSeconds] = useState(0);
+  const [timerExpired, setTimerExpired] = useState(false);
+  const timerId = useRef(null);
 
   useEffect(() => {
     if (!quiz_id) return;
@@ -18,6 +21,11 @@ export default function QuizPage() {
         const res = await fetch(`/api/get-quiz?id=${quiz_id}`);
         const data = await res.json();
         setQuiz(data);
+
+        if (data.timerSeconds > 0) {
+          setTotalSeconds(data.timerSeconds);
+        }
+
       } catch (err) {
         console.error("Error fetching quiz:", err);
       }
@@ -25,6 +33,27 @@ export default function QuizPage() {
 
     fetchQuiz();
   }, [quiz_id]);
+
+  useEffect(() => {
+    if (totalSeconds <= 0 || submitted) {
+      clearInterval(timerId.current);
+      return;
+    }
+  
+    timerId.current = setInterval(() => {
+      setTotalSeconds(prev => {
+        if (prev <= 1) {
+          clearInterval(timerId.current);
+          setTimerExpired(true);
+          handleSubmit(true); 
+          return 0;
+        }        
+        return prev - 1;
+      });
+    }, 1000);
+  
+    return () => clearInterval(timerId.current);
+  }, [totalSeconds, submitted]);
 
   const handleSingleSelect = (questionIndex, optionIndex) => {
     if (submitted) return;
@@ -45,28 +74,75 @@ export default function QuizPage() {
     });
   };
 
-  const handleSubmit = () => {
-    if (Object.keys(answers).length !== quiz.questions.length) {
+  const startTimer = () => {
+    if (timerId.current) return;
+  
+    const total = buildTotalSeconds();
+    if (total <= 0) return;
+  
+    setHideInput(true);
+    setTimerExpired(false);
+    setTotalSeconds(total);
+  
+    timerId.current = setInterval(() => {
+      setTotalSeconds(prev => {
+        if (prev <= 1) {
+          clearInterval(timerId.current);
+          timerId.current = null;
+          setTimerExpired(true);
+          setHideInput(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+  
+  const stopTimer = () => {
+    clearInterval(timerId.current);
+    timerId.current = null;
+  };
+  
+  const resetTimer = () => {
+    stopTimer();
+    setTimerExpired(false);
+    setHideInput(false);
+    setTotalSeconds(0);
+    setHours(0);
+    setMinutes(0);
+    setSeconds(0);
+  };
+
+  const formatTime = (secs) => {
+    const h = Math.floor(secs / 3600);
+    const m = Math.floor((secs % 3600) / 60);
+    const s = secs % 60;
+  
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  };
+
+  const handleSubmit = (isForced = false) => {
+    if (!isForced && Object.keys(answers).length !== quiz.questions.length) {
       alert("Please answer all questions before submitting!");
       return;
     }
-
+  
     let score = 0;
-
+  
     quiz.questions.forEach((q, i) => {
-      const correct = [...q.answerIndexes].sort(); 
+      const correct = [...q.answerIndexes].sort();
       const selected = [...(answers[i] || [])].sort();
-
+  
       const match =
         correct.length === selected.length &&
         correct.every((val, idx) => val === selected[idx]);
-
+  
       if (match) score++;
     });
-
+  
     setScoreCount(score);
     setSubmitted(true);
-  };
+  };  
 
   if (!quiz) return <div>Quiz not found</div>;
 
@@ -79,6 +155,10 @@ export default function QuizPage() {
           Score: {scoreCount}/{quiz.questions.length}
         </h2>
       )}
+
+      <div className="quizPageTextSecondary">
+        Time Remaining: {formatTime(totalSeconds)}
+      </div>
 
       <ul>
         {quiz.questions?.map((q, i) => {

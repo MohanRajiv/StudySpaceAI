@@ -131,6 +131,10 @@ export default function CreateQuiz() {
     }
   };
 
+  const buildTotalSeconds = () => {
+    return hours * 3600 + minutes * 60 + seconds;
+  };
+
   const toggleQuestionType = (type) => {
     setQuestionTypes(prev => {
       if (prev.includes(type)) {
@@ -332,6 +336,8 @@ export default function CreateQuiz() {
         return;
       }
 
+      const totalSeconds = buildTotalSeconds();
+
       const quizRes = await fetch("/api/gemini-route", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -340,6 +346,7 @@ export default function CreateQuiz() {
           numOfQuestions: numberCounts,
           quizType: quizType,
           questionTypes: questionTypes,
+          timerSeconds: totalSeconds,
         }),
       });
 
@@ -366,6 +373,7 @@ export default function CreateQuiz() {
         }
 
         parsedQuiz = JSON.parse(cleanedText);
+        parsedQuiz.timerSeconds = totalSeconds;
       } catch (error) {
         console.error("Error parsing quizData.text:", error);
         console.error("Raw response:", quizData);

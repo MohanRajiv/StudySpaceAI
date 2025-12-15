@@ -14,6 +14,7 @@ const quizSchema = new Schema({
   quizTitle: { type: String, required: true },
   questions: [questionSchema],
   quizType: {type: String},
+  timerSeconds: { type: Number},
 }, { timestamps: true });
 
 const QuizModel = models.QuizModel || model("QuizModel", quizSchema);

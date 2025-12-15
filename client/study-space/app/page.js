@@ -24,10 +24,6 @@ export default function Home() {
     return hours * 3600 + minutes * 60 + seconds;
   };
 
-  const setTimer = (seconds) => {
-    setTotalSeconds(seconds)
-  }
-
   const startTimer = () => {
     if (timerId.current) return;
   
