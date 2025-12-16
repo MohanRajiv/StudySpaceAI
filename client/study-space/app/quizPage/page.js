@@ -6,12 +6,13 @@ export default function QuizPage() {
   const searchParams = useSearchParams();
   const quiz_id = searchParams.get("quiz_id");
   const [quiz, setQuiz] = useState(null);
-  const [answers, setAnswers] = useState({}); // stores selected answers
+  const [answers, setAnswers] = useState({}); 
   const [submitted, setSubmitted] = useState(false);
   const [scoreCount, setScoreCount] = useState(0);
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [timerExpired, setTimerExpired] = useState(false);
   const timerId = useRef(null);
+  const [hideTimer, setHideTimer] = useState(false);
 
   useEffect(() => {
     if (!quiz_id) return;
@@ -24,6 +25,9 @@ export default function QuizPage() {
 
         if (data.timerSeconds > 0) {
           setTotalSeconds(data.timerSeconds);
+        }
+        else {
+          setHideTimer(true);
         }
 
       } catch (err) {
@@ -156,9 +160,11 @@ export default function QuizPage() {
         </h2>
       )}
 
-      <div className="quizPageTextSecondary">
-        Time Remaining: {formatTime(totalSeconds)}
-      </div>
+      {!hideTimer && (
+        <div className="quizPageTextSecondary">
+          Time Remaining: {formatTime(totalSeconds)}
+        </div>
+      )}
 
       <ul>
         {quiz.questions?.map((q, i) => {
@@ -167,7 +173,6 @@ export default function QuizPage() {
           return (
             <li key={i} style={{ marginBottom: "20px" }}>
               <p className="quizPageQuestionText">{i + 1}. {q.question}</p>
-
              
                 {q.questionType === "Dropdown" && (
                    <div className="quizPageOptions">

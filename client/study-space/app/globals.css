@@ -61,7 +61,7 @@ a {
 
 .centerText {
   margin-left: -5rem;
-  margin-top: 5rem;
+  margin-top: 5.5rem;
   display: flex;
   flex-direction: column;   
   align-items: center;      
@@ -118,7 +118,7 @@ a {
 .create-bar-container {
   position: absolute;
   margin-left: 14rem;
-  top: 260px;
+  top: 270px;
   width: 50%;
   border: 2px solid var(--text-clr);
   border-radius: 15px;
@@ -166,11 +166,16 @@ a {
   color: black;
 }
 
+.dropdown-wrapper {
+  position: relative; /* anchor point */
+  display: inline-block;
+}
+
 /*Search bar dropdown css*/
 .dropdown-menu {
   position: absolute;
-  top: 3.5rem;         
-  left: 0rem;              
+  top: 110%;         
+  left: -10%;             
   background-color: #ffffff;
   border: 2px solid rgb(0, 0, 0);
   border-radius: 8px;
@@ -298,6 +303,17 @@ a {
 .input-quiz-option-secondary-two {
   border-radius: 8px;
   border: 2px solid var(--background);
+  width: 35%;
+  text-align: center;
+  margin: 0px 10px;
+  height: 1.5rem;    
+  background-color: white;
+  color: black;    
+}
+
+.input-quiz-option-secondary-three {
+  border-radius: 8px;
+  border: 2px solid var(--background);
   width: 25%;
   text-align: center;
   margin: 0px 10px;
@@ -415,7 +431,7 @@ a {
   height: 15rem;
   width: 17rem;
   background: #ffffff;
-  border: 2px solid #5e63ff;
+  border: 2px solid #686767;
   border-radius: 6px;
   font-size: 0.7rem;
   display: flex;
@@ -735,4 +751,49 @@ a {
 
 .remove-drive-file-btn:hover {
   color: black;
+}
+
+.checkbox-container {
+
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 16px; 
+}
+
+.checkbox-options {
+  display: flex;
+  gap: 12px;              
+  padding-top: 8px;  
+}
+
+.option-label-container {
+ 
+}
+
+.hero-blur {
+  background:#5e63ff;
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(212px);
+  z-index: -9;
+  width: 40rem;
+  height: 30rem;
+  left: 20;
+  top: 10;
+}
+
+.hero-blur-two {
+  background:#5e63ff;
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(212px);
+  z-index: -9;
+  width: 30rem;
+  height: 30rem;
+  right: -10rem;
+  top:30rem;
+  top: -20;
 }

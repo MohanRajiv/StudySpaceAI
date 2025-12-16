@@ -11,6 +11,8 @@ export default async function historyPage(){
 
     return (
         <div>
+<div className="hero-blur"></div>
+      <div className="hero-blur-two"></div>      
             <h1 className="quizPageTextMain">Quizzes</h1>
             <h3 className="quizPageTextSecondary">View your quizzes here</h3>
             <div className="history-quiz-list">

@@ -604,7 +604,7 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 5rem;
+  margin-top: 5.5rem;
   margin-left: -5rem;
   font-family: Poppins;
   display: flex;
@@ -671,7 +671,7 @@ a {
   font-family: Poppins;
   display: flex;
   position: absolute;
-  top: 260px;
+  top: 270px;
 }
 
 .search-bar-container {
@@ -705,6 +705,11 @@ a {
   font-size: 1rem;
 }
 
+.dropdown-wrapper {
+  display: inline-block;
+  position: relative;
+}
+
 .dropdown-menu {
   z-index: 10;
   background-color: #fff;
@@ -713,8 +718,8 @@ a {
   width: 10rem;
   padding: .6rem;
   position: absolute;
-  top: 3.5rem;
-  left: 0;
+  top: 110%;
+  left: -10%;
 }
 
 .dropdown-item {
@@ -836,6 +841,17 @@ a {
   color: #000;
   background-color: #fff;
   border-radius: 8px;
+  width: 35%;
+  height: 1.5rem;
+  margin: 0 10px;
+}
+
+.input-quiz-option-secondary-three {
+  border: 2px solid var(--background);
+  text-align: center;
+  color: #000;
+  background-color: #fff;
+  border-radius: 8px;
   width: 25%;
   height: 1.5rem;
   margin: 0 10px;
@@ -946,7 +962,7 @@ a {
 
 .history-quiz-item {
   background: #fff;
-  border: 2px solid #5e63ff;
+  border: 2px solid #686767;
   border-radius: 6px;
   flex-direction: column;
   width: 17rem;
@@ -1267,6 +1283,42 @@ a {
 
 .remove-drive-file-btn:hover {
   color: #000;
+}
+
+.checkbox-group {
+  align-items: center;
+  gap: 16px;
+  display: flex;
+}
+
+.checkbox-options {
+  gap: 12px;
+  padding-top: 8px;
+  display: flex;
+}
+
+.hero-blur {
+  filter: blur(212px);
+  z-index: -9;
+  background: #5e63ff;
+  border-radius: 50%;
+  width: 40rem;
+  height: 30rem;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}
+
+.hero-blur-two {
+  filter: blur(212px);
+  z-index: -9;
+  background: #5e63ff;
+  border-radius: 50%;
+  width: 30rem;
+  height: 30rem;
+  position: absolute;
+  top: -20px;
+  right: -10rem;
 }
 
 @property --tw-border-style {

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { AiOutlineHome } from "react-icons/ai";
-import { MdOutlineCreateNewFolder, MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
+import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
 import { IoBookOutline } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 
@@ -56,32 +56,7 @@ export const Sidebar = () => {
             </div>    
         </li>
 
-        <li>
-          <div className="SideBySide">
-          {isCollapsed ? (
-          <Link href="/create">
-            <MdOutlineCreateNewFolder 
-            color={pathname === "/create" ? "#5e63ff" : "#e6e6ef"}
-            size={22}
-            />
-          </Link>
-          ) : (
-            <MdOutlineCreateNewFolder 
-            color={pathname === "/create" ? "#5e63ff" : "#e6e6ef"}
-            size={22}
-            />
-          )}
-          {!isCollapsed && (
-              <Link
-                href="/create"
-                className={pathname === "/create" ? "currentLink" : "notCurrentLink"}
-              >
-                Create
-              </Link>
-            )}
-          </div>    
-        </li>
-
+        
         <li>
           <div className="SideBySide">
           {isCollapsed ? (
